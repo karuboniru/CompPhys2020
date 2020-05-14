@@ -1,4 +1,5 @@
 import numpy as np
+
 from lennard_jones_potential.lennard_jones import lennard_jones
 
 
@@ -8,17 +9,14 @@ def pair_potential(x, args=()):
     Calculates the potential energy of configuration of particles.
 
     >>> from ljpotential import lennard_jones_potential as lj
-
     >>> x = np.array([[0.0, 0.0, 0.0]])
     >>> pair_potential(x)
     0.0
-
     >>> x = np.array([[0.0, 0.0, 0.0], [0.0, 0.0, 1.0]])
     >>> pair_potential(x)
     0.0
     >>> pair_potential(x)
     0.0
-
     >>> x = np.array([[0.0, 0.0], [0.0, 1.0], [0.0, 2.0]])
     >>> pair_potential(x, args=(1.0, 1.0))  #doctest: +ELLIPSIS
     -0.061523...
@@ -33,7 +31,6 @@ def pair_potential(x, args=()):
     :return: energy of the configuration
     :rtype: float
     """
-
 
     n, _ = x.shape
     left, right = np.triu_indices(n, 1)
