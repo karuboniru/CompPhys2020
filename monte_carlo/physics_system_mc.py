@@ -1,13 +1,18 @@
-from configuration import physics_system, particle
-from random import randint, random
-from numpy import exp
 import copy
+from random import randint, random
+
+from numpy import exp
+
+from configuration import particle, physics_system
 
 
 class physical_system_monte_carlo(physics_system):
-    def __init__(self, mcount=30, msize=5, mdimension=2, mmass=1, mmode='hard', temp=10):
-        super().__init__(count=mcount, size=msize,
-                         dimension=mdimension, mass=mmass, mode=mmode)
+    def __init__(self, count=30, size=5, dimension=2, mass=1, mode='hard', temp=10, rand=True):
+        if rand:
+            super().__init__(count=count, size=size,
+                             dimension=dimension, mass=mass, mode=mode)
+        else:
+            pass  # TODO: #1 will assign ordered particles here
         self.temp = temp
 
     def Metropolis_iter(self):
@@ -19,8 +24,11 @@ class physical_system_monte_carlo(physics_system):
         new_energy = new_configuration.get_potential_energy()
         if new_energy < now_energy:
             self.particles = new_configuration.particles
+            return True, new_energy
+        if self.temp == 0:
+            return False, now_energy
+        if random() < exp((now_energy - new_energy)/self.temp):
+            self.particles = new_configuration.particles
+            return True, new_energy
         else:
-            if self.temp == 0:
-                return
-            if random() > exp((now_energy - new_energy)/self.temp):
-                self.particles = new_configuration.particles
+            return False, now_energy

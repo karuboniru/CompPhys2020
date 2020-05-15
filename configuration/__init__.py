@@ -1,2 +1,2 @@
-from .physical_system import physics_system
-from .particle import particle
+from .physical_system import physics_system  # noqa
+from .particle import particle  # noqa

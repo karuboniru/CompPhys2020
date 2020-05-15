@@ -1,1 +1,1 @@
-from .calc_total_energy import pair_potential
+from .calc_total_energy import pair_potential   # noqa
