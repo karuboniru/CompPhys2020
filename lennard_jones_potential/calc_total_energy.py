@@ -3,7 +3,7 @@ import numpy as np
 from .lennard_jones import lennard_jones
 
 
-def pair_potential(x, sigma=1.0, epsilon=1.0, r_c=2.5, mode='hard', size=10.0):
+def pair_potential(x, mode, size=None, sigma=1.0, epsilon=1.0, r_c=2.5):
     """
 
     Calculates the potential energy of configuration of particles.
