@@ -3,7 +3,7 @@ import numpy as np
 from .lennard_jones import lennard_jones
 
 
-def pair_potential(x, args=()):
+def pair_potential(x, sigma=1.0, epsilon=1.0, r_c=2.5, mode='hard', size=10.0):
     """
 
     Calculates the potential energy of configuration of particles.
@@ -34,7 +34,12 @@ def pair_potential(x, args=()):
 
     n, _ = x.shape
     left, right = np.triu_indices(n, 1)
-    r = np.linalg.norm(x[left] - x[right], axis=1)
-    energy = np.sum(lennard_jones(r, *args))
+    if mode == 'hard':
+        r = np.linalg.norm(x[left] - x[right], axis=1)
+    elif mode == 'periodic':
+        r = np.linalg.norm((x[left] - x[right]+size/2) % size-size/2, axis=1)
+    else:
+        raise ValueError('Wrong mode specified')
+    energy = np.sum(lennard_jones(r, sigma=sigma, epsilon=epsilon, r_c=r_c))
 
     return energy
