@@ -1,7 +1,7 @@
 import numpy as np
 
-from lennard_jones_potential.calc_total_energy import pair_potential
-from lennard_jones_potential.lennard_jones import lennard_jones
+from .calc_total_energy import pair_potential
+from .lennard_jones import lennard_jones
 
 
 def test_lennard_jones():

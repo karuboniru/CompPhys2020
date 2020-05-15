@@ -1,6 +1,6 @@
 import numpy as np
 
-from lennard_jones_potential.lennard_jones import lennard_jones
+from .lennard_jones import lennard_jones
 
 
 def pair_potential(x, args=()):
