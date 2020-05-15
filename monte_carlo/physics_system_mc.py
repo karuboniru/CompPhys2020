@@ -17,7 +17,7 @@ class physical_system_monte_carlo(physics_system):
         new_configuration.particles[to_be_replaced] = particle(
             size=self.size, dimension=self.dimension, mass=self.mass, mode=self.mode)
         new_energy = new_configuration.get_potential_energy()
-        if new_energy<now_energy:
+        if new_energy < now_energy:
             self.particles = new_configuration.particles
         else:
             if self.temp == 0:

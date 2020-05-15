@@ -1,6 +1,6 @@
 from random import random
 
-from numpy import array, any
+from numpy import array
 from numpy.linalg import norm
 
 
@@ -30,8 +30,8 @@ class particle(object):
 
     def step(self, force, step_time):
         acceleration = force/self.mass
-        self.pos += self.velocity*step_time + self.acceleration*step_time**2
-        self.velocity = self.acceleration*step_time
+        self.pos += self.velocity*step_time + acceleration*step_time**2
+        self.velocity = acceleration*step_time
         if self.mode == 'hard':
             self.hard_boundary()
         if self.mode == 'periodic':

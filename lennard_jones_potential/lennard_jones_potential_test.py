@@ -2,7 +2,6 @@ import numpy as np
 
 from .calc_total_energy import pair_potential
 from .lennard_jones import lennard_jones
-from random import random
 import pytest
 
 

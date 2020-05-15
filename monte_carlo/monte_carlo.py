@@ -1,2 +1,1 @@
-from .physics_system_mc import *
-
+from .physics_system_mc import physical_system_monte_carlo
