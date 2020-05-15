@@ -5,7 +5,7 @@ from numpy.linalg import norm
 
 
 class particle(object):
-    def init(self, size=5, dimension=2, mass=1, mode='hard', velocity=[]):
+    def __init__(self, size=5, dimension=2, mass=1, mode='hard', velocity=[]):
         self.pos = array([random()*size for i in range(dimension)])
         if velocity == []:
             self.velocity = array([0] * dimension)

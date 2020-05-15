@@ -8,6 +8,10 @@ class physics_system(object):
         self.particles = [
             particle(size=size, dimension=dimension, mass=mass, mode=mode) for i in range(count)]
         self.size = size
+        self.count = count
+        self.dimension = dimension
+        self.mass = mass
+        self.mode = mode
 
     def get_potential_energy(self):
         return pair_potential(array([i.get_pos() for i in self.particles]))

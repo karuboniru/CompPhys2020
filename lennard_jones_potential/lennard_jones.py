@@ -42,9 +42,7 @@ def lennard_jones(r, sigma=1.0, epsilon=1.0, r_c=2.5):
     elif np.any(sigma <= 0.0):
         raise ValueError("particle diameter is not strictly positive")
     if type(r) is np.ndarray:
-        for i in range(len(r)):
-            if (r[i] > r_c):
-                r = np.delete(r, i)
+        r = r[np.where(r <= r_c)]
     elif r > r_c:
         return 0
     r6 = (sigma / r) ** 6
