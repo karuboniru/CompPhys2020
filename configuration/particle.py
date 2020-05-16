@@ -32,6 +32,14 @@ class particle(object):
         acceleration = force/self.mass
         self.pos += self.velocity*step_time + acceleration*step_time**2
         self.velocity = acceleration*step_time
+        self.replace()
+
+    def random_displace(self):
+        self.pos += array(
+            [random()-0.5 for i in range(self.dimension)])*2.5  # maybe better than just random place
+        self.replace()
+
+    def replace(self):
         if self.mode == 'hard':
             self.hard_boundary()
         if self.mode == 'periodic':

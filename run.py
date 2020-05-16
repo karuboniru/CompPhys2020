@@ -1,9 +1,9 @@
 from matplotlib import pyplot as plt
 from numpy import average
 from monte_carlo import monte_carlo_sim
-N = 20000
-sim = monte_carlo_sim(maxstep=N, temp=1, count=100,
-                      size=31.62, mode='periodic', mass=1)
+N = 10000
+sim = monte_carlo_sim(maxstep=N, temp=1.0, count=100,
+                      size=31.622, mode='periodic', mass=1, dimension=2)
 
 sim.do_simluation()
 # plt.yscale('log')

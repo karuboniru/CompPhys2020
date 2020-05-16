@@ -1,12 +1,13 @@
 from random import randint, random
 
 from numpy import exp, array
+from copy import deepcopy
 
-from configuration import particle, physics_system
+from configuration import physics_system
 
 
 class physical_system_monte_carlo(physics_system):
-    def __init__(self, count=None, size=None, dimension=None, mass=None, mode='hard', temp=None, rand=None):
+    def __init__(self, count, size, dimension, mass, mode, temp, rand):
         if rand:
             super().__init__(count=count, size=size,
                              dimension=dimension, mass=mass, mode=mode)
@@ -17,12 +18,17 @@ class physical_system_monte_carlo(physics_system):
     def Metropolis_iter(self):
         now_energy = self.get_potential_energy()
         to_be_replaced = randint(0, self.count - 1)
-        backup = self.particles[to_be_replaced]
-        self.particles[to_be_replaced] = particle(
-            size=self.size, dimension=self.dimension, mass=self.mass, mode=self.mode)
+        # if not deepcopy, backup will only be a "reference"
+        backup = deepcopy(self.particles[to_be_replaced])
+        # --------------------------way 1
+        # self.particles[to_be_replaced] = particle(
+        #     size=self.size, dimension=self.dimension, mass=self.mass, mode=self.mode)
+        # --------------------------way 2
         # self.particles[to_be_replaced].pos += array(
-        #     [random() for i in range(self.dimension)])*2.5
-        # self.particles[to_be_replaced].pos %= self.size
+        #     [random()-0.5 for i in range(self.dimension)])*2.5  # maybe better than just random place
+        # self.particles[to_be_replaced].replace()
+        # --------------------------way 3
+        self.particles[to_be_replaced].random_displace()
         new_energy = self.get_potential_energy()
         if new_energy < now_energy:
             return True, new_energy
