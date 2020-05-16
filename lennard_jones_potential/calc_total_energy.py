@@ -39,12 +39,14 @@ def pair_potential(x, mode, size=None, sigma=1.0, epsilon=1.0, r_c=2.5):
         pass
     elif mode == 'periodic':
         # following code will generate copies of position_difference_list on every calculation
-        # r = np.linalg.norm((position_difference_list+size/2) %
+        # r = np.linalg.norm((np.abs(position_difference_list)+size/2) %
         #                    size-size/2, axis=1)
         # this code below can avoid creating copies of array position_difference_list, can make code faster
         # because position_difference_list is a bug list (N^2/2) avoiding coping this will be helpful
-        np.add(np.mod(np.add(position_difference_list, size/2, out=position_difference_list), size,
-                      out=position_difference_list), -size/2, out=position_difference_list)
+        np.abs(position_difference_list, out=position_difference_list)
+        np.add(position_difference_list, size/2, out=position_difference_list)
+        np.mod(position_difference_list, size, out=position_difference_list)
+        np.add(position_difference_list, -size/2, out=position_difference_list)
     else:
         raise ValueError('Wrong mode specified')
     return np.sum(lennard_jones(np.linalg.norm(

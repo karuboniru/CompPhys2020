@@ -5,6 +5,10 @@ from lennard_jones_potential.lennard_jones import lennard_jones
 import pytest
 
 
+def near(x, y):
+    return abs(x-y) < 1e-8*(max([abs(x), abs(y)]))
+
+
 def test_lennard_jones_special_number():
     assert lennard_jones(2**(1/6), 1.0, 1.0) == -1.0
     assert lennard_jones(10.0, 1.0, 1.0, 2.5) == 0
@@ -24,8 +28,8 @@ def test_pair_potential():
 
 
 def test_pair_potential_special_number():
-    assert pair_potential(
-        np.array([[0.0, 0.0], [0.0, 1.0], [0.0, 2.0]]), mode='hard') == -0.0615234375
+    assert near(pair_potential(
+        np.array([[0.0, 0.0], [0.0, 1.0], [0.0, 2.0]]), mode='hard'), -0.0615234375)
     assert pair_potential(
         np.array([[0.0, 0.0], [0.0, 1.0]]), mode='hard') == lennard_jones(1.0)
 
@@ -38,10 +42,14 @@ def test_pair_potential_out_of_range():
 
 
 def test_pair_periodic():
-    assert pair_potential(np.array([[0.0, 0.0], [0.0, 2.0]]), mode='periodic', size=3.0) == pair_potential(
-        np.array([[0.0, 0.0], [0.0, 1.0]]), mode='periodic', size=3.0)
-    assert abs(pair_potential(np.array([[0.0, 0.0], [0.0, 0.2]]), mode='hard') -
-               pair_potential(np.array([[0.0, 0.0], [0.0, 0.2]]), mode='periodic', size=10)) < 0.001
+    assert near(pair_potential(
+        np.array([[0.0], [0.4]]), mode='periodic', size=1.0), lennard_jones(0.4))
+    assert near(pair_potential(
+        np.array([[0.0], [0.6]]), mode='periodic', size=1.0), lennard_jones(0.4))
+    assert near(pair_potential(
+        np.array([[0.0], [-0.4]]), mode='periodic', size=1.0), lennard_jones(0.4))
+    assert near(pair_potential(
+        np.array([[0.0], [-0.6]]), mode='periodic', size=1.0), lennard_jones(0.4))
 
 
 def test_pair_periodic_with_expections():
