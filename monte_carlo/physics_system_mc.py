@@ -1,6 +1,6 @@
 from random import randint, random
 
-from numpy import exp, array
+from numpy import exp
 from copy import deepcopy
 
 from configuration import physics_system

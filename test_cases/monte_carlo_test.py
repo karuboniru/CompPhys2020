@@ -1,4 +1,4 @@
-from .physics_system_mc import physical_system_monte_carlo
+from monte_carlo.physics_system_mc import physical_system_monte_carlo
 
 
 def test_Metropolis_iter1():

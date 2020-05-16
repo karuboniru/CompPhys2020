@@ -1,4 +1,4 @@
-from .particle import particle
+from configuration.particle import particle
 from numpy import array, all
 
 
