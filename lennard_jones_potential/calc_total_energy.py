@@ -34,12 +34,18 @@ def pair_potential(x, mode, size=None, sigma=1.0, epsilon=1.0, r_c=2.5):
 
     n, _ = x.shape
     left, right = np.triu_indices(n, 1)
+    position_difference_list = x[left] - x[right]
     if mode == 'hard':
-        r = np.linalg.norm(x[left] - x[right], axis=1)
+        pass
     elif mode == 'periodic':
-        r = np.linalg.norm((x[left] - x[right]+size/2) % size-size/2, axis=1)
+        # following code will generate copies of position_difference_list on every calculation
+        # r = np.linalg.norm((position_difference_list+size/2) %
+        #                    size-size/2, axis=1)
+        # this code below can avoid creating copies of array position_difference_list, can make code faster
+        # because position_difference_list is a bug list (N^2/2) avoiding coping this will be helpful
+        np.add(np.mod(np.add(position_difference_list, size/2, out=position_difference_list), size,
+                      out=position_difference_list), -size/2, out=position_difference_list)
     else:
         raise ValueError('Wrong mode specified')
-    energy = np.sum(lennard_jones(r, sigma=sigma, epsilon=epsilon, r_c=r_c))
-
-    return energy
+    return np.sum(lennard_jones(np.linalg.norm(
+        position_difference_list, axis=1), sigma=sigma, epsilon=epsilon, r_c=r_c))

@@ -7,7 +7,7 @@ def test_boundary_hard():
     tested.size = 10
     tested.pos = array([0.0, 2.0, 12.0])
     tested.velocity = array([1.0, 3.0, 2.0])
-    tested.replace()
+    tested.reposition()
     assert all(tested.pos == array([0.0, 2.0, 8.0]))
     assert all(tested.velocity == array([1.0, 3.0, -2.0]))
 
@@ -19,6 +19,6 @@ def test_boundary_periodic():
     tested.pos = array([0.0, 2.0, 12.0])
     tested.velocity = array([1.0, 3.0, 2.0])
     tested.pos = array([0.0, 2.0, 12.0])
-    tested.replace()
+    tested.reposition()
     assert all(tested.pos == array([0.0, 2.0, 2.0]))
     assert all(tested.velocity == array([1.0, 3.0, 2.0]))
