@@ -57,13 +57,14 @@ class physics_system(object):
             raise(NotImplementedError)
         n = int(sqrt(self.count))
         k = 0
+        lam = 1.1
         for i in range(n):
             for j in range(n):
-                self.particles[k][0] = i*sqrt(3) / 2
-                self.particles[k][1] = (i % 2 != 0)*(1/2) + j
+                self.particles[k][0] = (i*sqrt(3) / 2)*lam
+                self.particles[k][1] = ((i % 2 != 0)*(1/2) + j)*lam
                 k += 1
         remain = self.count - n**2
-        for l in range(remain):
-            self.particles[k][0] = n*sqrt(3) / 2
-            self.particles[k][1] = (n % 2 != 0)*(1/2) + l
+        for g in range(remain):
+            self.particles[k][0] = (n*sqrt(3) / 2)*lam
+            self.particles[k][1] = ((n % 2 != 0)*(1/2) + g)*lam
             k += 1
