@@ -36,7 +36,7 @@ class particle(object):
 
     def random_displace(self):
         self.pos += array(
-            [random()-0.5 for i in range(self.dimension)])*2.5  # maybe better than just random place
+            [random()-0.5 for i in range(self.dimension)])*1.0  # maybe better than just random place
         self.reposition()
 
     def reposition(self):

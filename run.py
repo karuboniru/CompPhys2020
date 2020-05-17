@@ -1,9 +1,13 @@
 from matplotlib import pyplot as plt
-from numpy import average
+from numpy import average, sqrt
 from monte_carlo import monte_carlo_sim
-N = 10000
-sim = monte_carlo_sim(maxstep=N, temp=1.0, count=100,
-                      size=31.622, mode='periodic', mass=1, dimension=2)
+N = 20000
+count = 100
+rho = 0.8442
+temp = 0.728
+size = sqrt(count/rho)
+sim = monte_carlo_sim(maxstep=N, temp=temp, count=count,
+                      size=size, mode='periodic', mass=1, dimension=2)
 
 sim.do_simluation()
 # plt.yscale('log')
@@ -15,6 +19,22 @@ y = []
 for i in sim.phy_sys.particles:
     x.append(i.pos[0])
     y.append(i.pos[1])
+    x.append(i.pos[0]+size)
+    y.append(i.pos[1])
+    x.append(i.pos[0]-size)
+    y.append(i.pos[1])
+    x.append(i.pos[0])
+    y.append(i.pos[1]+size)
+    x.append(i.pos[0])
+    y.append(i.pos[1]-size)
+    x.append(i.pos[0]+size)
+    y.append(i.pos[1]+size)
+    x.append(i.pos[0]-size)
+    y.append(i.pos[1]+size)
+    x.append(i.pos[0]+size)
+    y.append(i.pos[1]-size)
+    x.append(i.pos[0]-size)
+    y.append(i.pos[1]-size)
 plt.scatter(x, y)
 print(average(energylist[N-500:N-1]))
 plt.show()
