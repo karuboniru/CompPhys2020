@@ -1,19 +1,24 @@
 # from .particle import particle
-from numpy import array, sum
+from numpy import array, sum, sqrt
 from lennard_jones_potential import pair_potential, potential_for_one_particle
 from random import random
 
 
 class physics_system(object):
-    def __init__(self, count, size, dimension, mass, mode, velocity=None):
-        self.particles = array([
-            [random()*size for j in range(dimension)] for i in range(count)])
-        self.velocity = velocity
+    def __init__(self, count, size, dimension, mass, mode, velocity=None, rand=True):
         self.size = size
         self.count = count
         self.dimension = dimension
         self.mass = mass
         self.mode = mode
+        if rand:
+            self.particles = array([
+                [random()*size for j in range(dimension)] for i in range(count)])
+        else:
+            self.particles = array([
+                [0. for j in range(dimension)] for i in range(count)])
+            self.hex_place(dimension)
+        self.velocity = velocity
 
     def get_potential_energy(self):
         return pair_potential(self.particles, mode=self.mode, size=self.size)
@@ -46,3 +51,19 @@ class physics_system(object):
             self.hard_boundary(particle_id)
         if self.mode == 'periodic':
             self.periodic_boundary(particle_id)
+
+    def hex_place(self, dimension):
+        if dimension != 2:
+            raise(NotImplementedError)
+        n = int(sqrt(self.count))
+        k = 0
+        for i in range(n):
+            for j in range(n):
+                self.particles[k][0] = i*sqrt(3) / 2
+                self.particles[k][1] = (i % 2 != 0)*(1/2) + j
+                k += 1
+        remain = self.count - n**2
+        for l in range(remain):
+            self.particles[k][0] = n*sqrt(3) / 2
+            self.particles[k][1] = (n % 2 != 0)*(1/2) + l
+            k += 1

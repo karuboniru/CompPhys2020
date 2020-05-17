@@ -8,16 +8,17 @@ from configuration import physics_system
 
 class physical_system_monte_carlo(physics_system):
     def __init__(self, count, size, dimension, mass, mode, temp, rand):
-        if rand:
-            super().__init__(count=count, size=size,
-                             dimension=dimension, mass=mass, mode=mode)
-        else:
-            pass  # TODO: #1 will assign ordered particles here
+        super().__init__(count=count, size=size,
+                         dimension=dimension, mass=mass, mode=mode, rand=rand)
         self.temp = temp
 
-    def Metropolis_iter(self, maxd):
+    def Metropolis_iter(self, maxd, record_true_energy=False):
+        if record_true_energy:
+            self.get_energy_method = self.get_potential_energy
+        else:
+            self.get_energy_method = self.get_potential_energy_for_one
         to_be_replaced = randint(0, self.count - 1)
-        now_energy = self.get_potential_energy_for_one(to_be_replaced)
+        now_energy = self.get_energy_method(to_be_replaced)
         # if not deepcopy, backup will only be a "reference"
         backup = deepcopy(self.particles[to_be_replaced])
         # --------------------------way 1
@@ -29,7 +30,7 @@ class physical_system_monte_carlo(physics_system):
         # self.particles[to_be_replaced].replace()
         # --------------------------way 3
         self.random_displace(to_be_replaced, maxd)
-        new_energy = self.get_potential_energy_for_one(to_be_replaced)
+        new_energy = self.get_energy_method(to_be_replaced)
         if new_energy < now_energy:
             return True, new_energy
         if self.temp == 0:
