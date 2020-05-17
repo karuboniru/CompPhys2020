@@ -7,7 +7,7 @@ def test_Metropolis_iter1():
         temp=0, count=20, size=10, dimension=2, mass=1, mode='hard',  rand=True)
     for i in range(50):
         now_e = sys.get_potential_energy()
-        sys.Metropolis_iter()
+        sys.Metropolis_iter(1)
         new_e = sys.get_potential_energy()
         assert now_e >= new_e
 
@@ -18,7 +18,7 @@ def test_Metropolis_iter2():
     count = 0
     for i in range(100):
         now_e = sys.get_potential_energy()
-        sys.Metropolis_iter()
+        sys.Metropolis_iter(1)
         new_e = sys.get_potential_energy()
         if now_e >= new_e:
             count += 1
@@ -31,7 +31,7 @@ def test_Metropolis_iter3():
     count = 0
     for i in range(100):
         now_e = sys.get_potential_energy()
-        sys.Metropolis_iter()
+        sys.Metropolis_iter(1)
         new_e = sys.get_potential_energy()
         if now_e >= new_e:
             count += 1
@@ -44,7 +44,7 @@ def test_Metropolis_iter4():
         temp=0, mode='periodic', count=20, size=10, dimension=2, mass=1,  rand=True)
     for i in range(50):
         now_e = sys.get_potential_energy()
-        sys.Metropolis_iter()
+        sys.Metropolis_iter(1)
         new_e = sys.get_potential_energy()
         assert now_e >= new_e
 
@@ -55,7 +55,7 @@ def test_Metropolis_iter5():
     count = 0
     for i in range(100):
         now_e = sys.get_potential_energy()
-        sys.Metropolis_iter()
+        sys.Metropolis_iter(1)
         new_e = sys.get_potential_energy()
         if now_e >= new_e:
             count += 1
@@ -68,7 +68,7 @@ def test_Metropolis_iter6():
     count = 0
     for i in range(100):
         now_e = sys.get_potential_energy()
-        sys.Metropolis_iter()
+        sys.Metropolis_iter(1)
         new_e = sys.get_potential_energy()
         if now_e >= new_e:
             count += 1

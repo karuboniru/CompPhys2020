@@ -34,9 +34,9 @@ class particle(object):
         self.velocity = acceleration*step_time
         self.reposition()
 
-    def random_displace(self):
+    def random_displace(self, maxd=0.25):
         self.pos += array(
-            [random()-0.5 for i in range(self.dimension)])*1.0  # maybe better than just random place
+            [random()-0.5 for i in range(self.dimension)])*maxd  # maybe better than just random place
         self.reposition()
 
     def reposition(self):

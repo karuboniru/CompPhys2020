@@ -51,3 +51,26 @@ def pair_potential(x, mode, size=None, sigma=1.0, epsilon=1.0, r_c=2.5):
         raise ValueError('Wrong mode specified')
     return np.sum(lennard_jones(np.linalg.norm(
         position_difference_list, axis=1), sigma=sigma, epsilon=epsilon, r_c=r_c))
+
+
+def potential_for_one_particle(x, mode, particle_id, size=None, sigma=1.0, epsilon=1.0, r_c=2.5):
+    n, _ = x.shape
+    left, right = particle_id, np.array(
+        [(i < particle_id)*i + (i >= particle_id)*(i+1) for i in range(n-1)])
+    position_difference_list = x[left] - x[right]
+    if mode == 'hard':
+        pass
+    elif mode == 'periodic':
+        # following code will generate copies of position_difference_list on every calculation
+        # r = np.linalg.norm((np.abs(position_difference_list)+size/2) %
+        #                    size-size/2, axis=1)
+        # this code below can avoid creating copies of array position_difference_list, can make code faster
+        # because position_difference_list is a bug list (N^2/2) avoiding coping this will be helpful
+        np.abs(position_difference_list, out=position_difference_list)
+        np.add(position_difference_list, size/2, out=position_difference_list)
+        np.mod(position_difference_list, size, out=position_difference_list)
+        np.add(position_difference_list, -size/2, out=position_difference_list)
+    else:
+        raise ValueError('Wrong mode specified')
+    return np.sum(lennard_jones(np.linalg.norm(
+        position_difference_list, axis=1), sigma=sigma, epsilon=epsilon, r_c=r_c))

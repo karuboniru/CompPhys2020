@@ -1,24 +1,24 @@
-from configuration.particle import particle
+from configuration import physics_system
 from numpy import array, all
 
 
 def test_boundary_hard():
-    tested = particle(size=5, dimension=2, mass=1, mode='hard', velocity=[])
+    tested = physics_system(size=5, dimension=2, mass=1, mode='hard', velocity=[], count = 1)
     tested.size = 10
-    tested.pos = array([0.0, 2.0, 12.0])
-    tested.velocity = array([1.0, 3.0, 2.0])
-    tested.reposition()
-    assert all(tested.pos == array([0.0, 2.0, 8.0]))
-    assert all(tested.velocity == array([1.0, 3.0, -2.0]))
+    tested.particles = array([[0.0, 2.0, 12.0]])
+    tested.velocity = array([[1.0, 3.0, 2.0]])
+    tested.reposition(0)
+    assert all(tested.particles == array([[0.0, 2.0, 8.0]]))
+    assert all(tested.velocity == array([[1.0, 3.0, -2.0]]))
 
 
 def test_boundary_periodic():
-    tested = particle(size=5, dimension=2, mass=1,
-                      mode='periodic', velocity=[])
+    tested = physics_system(size=5, dimension=2, mass=1,
+                      mode='periodic', velocity=[], count = 1)
     tested.size = 10
-    tested.pos = array([0.0, 2.0, 12.0])
-    tested.velocity = array([1.0, 3.0, 2.0])
-    tested.pos = array([0.0, 2.0, 12.0])
-    tested.reposition()
-    assert all(tested.pos == array([0.0, 2.0, 2.0]))
-    assert all(tested.velocity == array([1.0, 3.0, 2.0]))
+    tested.particles = array([[0.0, 2.0, 12.0]])
+    tested.velocity = array([[1.0, 3.0, 2.0]])
+    tested.particles = array([[0.0, 2.0, 12.0]])
+    tested.reposition(0)
+    assert all(tested.particles == array([[0.0, 2.0, 2.0]]))
+    assert all(tested.velocity == array([[1.0, 3.0, 2.0]]))
