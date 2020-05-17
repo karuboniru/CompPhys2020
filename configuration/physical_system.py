@@ -33,7 +33,7 @@ class physics_system(object):
                    self.size - self.particles[particle_id]) == 0)*1
         self.particles[particle_id] = (
             self.particles[particle_id]*if_out) % self.size
-        if (not self.velocity is None):
+        if (self.velocity is not None):
             self.velocity[particle_id] *= if_out
 
     def random_displace(self, particle_id, maxd=0.25):

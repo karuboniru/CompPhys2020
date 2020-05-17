@@ -1,5 +1,5 @@
 from matplotlib import pyplot as plt
-from numpy import average, sqrt
+from numpy import average, sqrt  # noqa
 from monte_carlo import monte_carlo_sim
 N = 10000
 count = 100
@@ -19,22 +19,22 @@ y = []
 for i in sim.phy_sys.particles:
     x.append(i[0])
     y.append(i[1])
-    x.append(i[0]+size)
-    y.append(i[1])
-    x.append(i[0]-size)
-    y.append(i[1])
-    x.append(i[0])
-    y.append(i[1]+size)
-    x.append(i[0])
-    y.append(i[1]-size)
-    x.append(i[0]+size)
-    y.append(i[1]+size)
-    x.append(i[0]-size)
-    y.append(i[1]+size)
-    x.append(i[0]+size)
-    y.append(i[1]-size)
-    x.append(i[0]-size)
-    y.append(i[1]-size)
+    # x.append(i[0]+size)
+    # y.append(i[1])
+    # x.append(i[0]-size)
+    # y.append(i[1])
+    # x.append(i[0])
+    # y.append(i[1]+size)
+    # x.append(i[0])
+    # y.append(i[1]-size)
+    # x.append(i[0]+size)
+    # y.append(i[1]+size)
+    # x.append(i[0]-size)
+    # y.append(i[1]+size)
+    # x.append(i[0]+size)
+    # y.append(i[1]-size)
+    # x.append(i[0]-size)
+    # y.append(i[1]-size)
 plt.scatter(x, y)
 print(sim.phy_sys.get_potential_energy())
 plt.show()

@@ -3,7 +3,8 @@ from numpy import array, all
 
 
 def test_boundary_hard():
-    tested = physics_system(size=5, dimension=2, mass=1, mode='hard', velocity=[], count = 1)
+    tested = physics_system(size=5, dimension=2, mass=1,
+                            mode='hard', velocity=[], count=1)
     tested.size = 10
     tested.particles = array([[0.0, 2.0, 12.0]])
     tested.velocity = array([[1.0, 3.0, 2.0]])
@@ -14,7 +15,7 @@ def test_boundary_hard():
 
 def test_boundary_periodic():
     tested = physics_system(size=5, dimension=2, mass=1,
-                      mode='periodic', velocity=[], count = 1)
+                            mode='periodic', velocity=[], count=1)
     tested.size = 10
     tested.particles = array([[0.0, 2.0, 12.0]])
     tested.velocity = array([[1.0, 3.0, 2.0]])
