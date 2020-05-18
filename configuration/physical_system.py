@@ -1,5 +1,5 @@
 # from .particle import particle
-from numpy import array, sum, sqrt
+from numpy import array, sum, sqrt, empty
 from lennard_jones_potential import pair_potential, potential_for_one_particle
 from random import random
 
@@ -15,8 +15,7 @@ class physics_system(object):
             self.particles = array([
                 [random()*size for j in range(dimension)] for i in range(count)])
         else:
-            self.particles = array([
-                [0. for j in range(dimension)] for i in range(count)])
+            self.particles = empty((count, dimension))
             self.hex_place(dimension)
         self.velocity = velocity
 
