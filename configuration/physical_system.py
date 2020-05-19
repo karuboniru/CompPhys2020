@@ -1,7 +1,9 @@
 # from .particle import particle
-from numpy import array, sum, sqrt, empty
-from lennard_jones_potential import pair_potential, potential_for_one_particle
 from random import random
+
+from numpy import array, empty, sqrt
+
+from lennard_jones_potential import pair_potential, potential_for_one_particle
 
 
 class physics_system(object):

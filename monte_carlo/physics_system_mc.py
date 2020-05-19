@@ -1,7 +1,8 @@
-from random import randint, random
-from functools import partial
-from numpy import exp
 from copy import deepcopy
+from functools import partial
+from random import randint, random
+
+from numpy import exp
 
 from configuration import physics_system
 

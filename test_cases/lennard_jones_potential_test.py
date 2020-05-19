@@ -16,7 +16,8 @@ def near(x, y):
 def test_lennard_jones_single_special_number():
     assert lennard_jones_single(2**(1/6), 1.0, 1.0) == -1.0
     assert lennard_jones_single(10.0, 1.0, 1.0, 2.5) == 0
-    assert lennard_jones_single(0, 1.0, 1.0, 2.5) == float('+inf')
+    with np.errstate(divide='ignore'):
+        assert lennard_jones_single(0, 1.0, 1.0, 2.5) == float('+inf')
 
 # no more need this
 # def test_lennard_jones_single_with_expections():

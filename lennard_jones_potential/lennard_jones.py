@@ -45,9 +45,7 @@ def lennard_jones(r, sigma=1.0, epsilon=1.0, r_c=2.5):
     r = r[np.where(r <= r_c)]
     # elif r > r_c:
     #     return 0
-    try:
-        r6 = (sigma / r) ** 6
-    except ZeroDivisionError:
-        return float('+inf')
-    else:
-        return 4 * epsilon * r6 * (r6 - 1)
+
+    r6 = (sigma / r) ** 6
+
+    return 4 * epsilon * r6 * (r6 - 1)

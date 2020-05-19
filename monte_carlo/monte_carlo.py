@@ -2,7 +2,8 @@ from .physics_system_mc import physical_system_monte_carlo
 
 
 class monte_carlo_sim(object):
-    def __init__(self, count, size, dimension, mass, mode, temp, maxstep, rand=True, start_recording=float("inf"), recording_interval=100):
+    def __init__(self, count, size, dimension, mass, mode, temp, maxstep, rand=True,
+                 start_recording=float("inf"), recording_interval=100):
         self.phy_sys = physical_system_monte_carlo(
             count, size, dimension, mass, mode=mode, temp=temp, rand=rand)
         self.maxstep = maxstep
