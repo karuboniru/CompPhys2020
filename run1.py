@@ -10,7 +10,6 @@ size = sqrt(count/rho)
 sim = monte_carlo_sim(maxstep=N, temp=temp, count=count,
                       size=size, mode='periodic', mass=1, dimension=2, rand=True)
 
-sim.do_simluation()
 # plt.yscale('log')
 # plt.xscale('log')
 energylist = sim.get_energy_per_step()

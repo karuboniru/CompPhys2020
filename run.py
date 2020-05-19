@@ -2,15 +2,15 @@ from matplotlib import pyplot as plt
 from numpy import average, sqrt  # noqa
 from monte_carlo import monte_carlo_sim
 
-count = 200
-N = 30000
+count = 100
+N = 10000
 rho = 0.8442
 temp = 0.728
 size = sqrt(count/rho)
 sim = monte_carlo_sim(maxstep=N, temp=temp, count=count,
-                      size=size, mode='periodic', mass=1, dimension=2, rand=False)
+                      size=size, mode='periodic', mass=1, dimension=2, rand=False, start_recording=9000)
 
-sim.do_simluation()
+
 # plt.yscale('log')
 # plt.xscale('log')
 energylist = sim.get_energy_per_step()

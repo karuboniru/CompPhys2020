@@ -5,22 +5,27 @@ from lennard_jones_potential.lennard_jones import lennard_jones
 import pytest
 
 
+def lennard_jones_single(r, sigma=1.0, epsilon=1.0, r_c=2.5):
+    return np.sum(lennard_jones(np.array([r]), sigma=1.0, epsilon=1.0, r_c=2.5))
+
+
 def near(x, y):
     return abs(x-y) < 1e-8*(max([abs(x), abs(y)]))
 
 
-def test_lennard_jones_special_number():
-    assert lennard_jones(2**(1/6), 1.0, 1.0) == -1.0
-    assert lennard_jones(10.0, 1.0, 1.0, 2.5) == 0
+def test_lennard_jones_single_special_number():
+    assert lennard_jones_single(2**(1/6), 1.0, 1.0) == -1.0
+    assert lennard_jones_single(10.0, 1.0, 1.0, 2.5) == 0
+    assert lennard_jones_single(0, 1.0, 1.0, 2.5) == float('+inf')
 
-
-def test_lennard_jones_with_expections():
-    with pytest.raises(ValueError, match='distance between particles is negative'):
-        lennard_jones(-1.0, 1.0, 1.0)
-    with pytest.raises(ValueError, match='particle diameter is not strictly positive'):
-        lennard_jones(1.0, -1.0, 1.0)
-    with pytest.raises(ZeroDivisionError):
-        lennard_jones(0.0, 1.0, 1.0)
+# no more need this
+# def test_lennard_jones_single_with_expections():
+#     with pytest.raises(ValueError, match='distance between particles is negative'):
+#         lennard_jones_single(-1.0, 1.0, 1.0)
+#     with pytest.raises(ValueError, match='particle diameter is not strictly positive'):
+#         lennard_jones_single(1.0, -1.0, 1.0)
+#     with pytest.raises(ZeroDivisionError):
+#         lennard_jones_single(0.0, 1.0, 1.0)
 
 
 def test_pair_potential():
@@ -31,7 +36,7 @@ def test_pair_potential_special_number():
     assert near(pair_potential(
         np.array([[0.0, 0.0], [0.0, 1.0], [0.0, 2.0]]), mode='hard'), -0.0615234375)
     assert pair_potential(
-        np.array([[0.0, 0.0], [0.0, 1.0]]), mode='hard') == lennard_jones(1.0)
+        np.array([[0.0, 0.0], [0.0, 1.0]]), mode='hard') == lennard_jones_single(1.0)
 
 
 def test_pair_potential_out_of_range():
@@ -43,13 +48,13 @@ def test_pair_potential_out_of_range():
 
 def test_pair_periodic():
     assert near(pair_potential(
-        np.array([[0.0], [0.4]]), mode='periodic', size=1.0), lennard_jones(0.4))
+        np.array([[0.0], [0.4]]), mode='periodic', size=1.0), lennard_jones_single(0.4))
     assert near(pair_potential(
-        np.array([[0.0], [0.6]]), mode='periodic', size=1.0), lennard_jones(0.4))
+        np.array([[0.0], [0.6]]), mode='periodic', size=1.0), lennard_jones_single(0.4))
     assert near(pair_potential(
-        np.array([[0.0], [-0.4]]), mode='periodic', size=1.0), lennard_jones(0.4))
+        np.array([[0.0], [-0.4]]), mode='periodic', size=1.0), lennard_jones_single(0.4))
     assert near(pair_potential(
-        np.array([[0.0], [-0.6]]), mode='periodic', size=1.0), lennard_jones(0.4))
+        np.array([[0.0], [-0.6]]), mode='periodic', size=1.0), lennard_jones_single(0.4))
 
 
 def test_pair_periodic_with_expections():

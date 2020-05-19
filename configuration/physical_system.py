@@ -25,9 +25,6 @@ class physics_system(object):
     def get_potential_energy_for_one(self, particle_id):
         return potential_for_one_particle(self.particles, particle_id=particle_id, mode=self.mode, size=self.size)
 
-    def get_kinetic_energy(self):
-        return sum([i.get_kinetic_energy() for i in self.particles])
-
     def periodic_boundary(self, particle_id):
         self.particles[particle_id] %= self.size
 

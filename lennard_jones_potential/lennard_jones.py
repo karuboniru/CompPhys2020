@@ -36,15 +36,18 @@ def lennard_jones(r, sigma=1.0, epsilon=1.0, r_c=2.5):
     :return: the Lennard-Jones energy of the particle pair
     :rtype: float
     """
-
-    if np.any(r < 0.0):
-        raise ValueError("distance between particles is negative")
-    elif np.any(sigma <= 0.0):
-        raise ValueError("particle diameter is not strictly positive")
-    if type(r) is np.ndarray:
-        r = r[np.where(r <= r_c)]
-    elif r > r_c:
-        return 0
-    r6 = (sigma / r) ** 6
-
-    return 4 * epsilon * r6 * (r6 - 1)
+    # no need to do those judge and convertion beause this is always called by other modules but not the user
+    # if np.any(r < 0.0):
+    #     raise ValueError("distance between particles is negative")
+    # elif np.any(sigma <= 0.0):
+    #     raise ValueError("particle diameter is not strictly positive")
+    # if type(r) is np.ndarray:
+    r = r[np.where(r <= r_c)]
+    # elif r > r_c:
+    #     return 0
+    try:
+        r6 = (sigma / r) ** 6
+    except ZeroDivisionError:
+        return float('+inf')
+    else:
+        return 4 * epsilon * r6 * (r6 - 1)
