@@ -43,7 +43,7 @@ def pair_potential(x, mode, size=None, sigma=1.0, epsilon=1.0, r_c=2.5):
         #                    size-size/2, axis=1)
         # this code below can avoid creating copies of array position_difference_list, can make code faster
         # because position_difference_list is a bug list (N^2/2) avoiding coping this will be helpful
-        np.abs(position_difference_list, out=position_difference_list)
+        # np.abs(position_difference_list, out=position_difference_list)
         np.add(position_difference_list, size/2, out=position_difference_list)
         np.mod(position_difference_list, size, out=position_difference_list)
         np.add(position_difference_list, -size/2, out=position_difference_list)
@@ -66,7 +66,7 @@ def potential_for_one_particle(x, mode, particle_id, size=None, sigma=1.0, epsil
         #                    size-size/2, axis=1)
         # this code below can avoid creating copies of array position_difference_list, can make code faster
         # because position_difference_list is a bug list (N^2/2) avoiding coping this will be helpful
-        np.abs(position_difference_list, out=position_difference_list)
+        # np.abs(position_difference_list, out=position_difference_list)
         np.add(position_difference_list, size/2, out=position_difference_list)
         np.mod(position_difference_list, size, out=position_difference_list)
         np.add(position_difference_list, -size/2, out=position_difference_list)
