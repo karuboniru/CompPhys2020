@@ -12,6 +12,7 @@ class monte_carlo_sim(object):
         self.start_recording = start_recording
         self.recording_interval = recording_interval
         self.do_simluation()
+        self.phy_sys.reposition()
 
     def do_simluation(self):
         def maxd(i):

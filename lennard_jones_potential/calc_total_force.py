@@ -12,7 +12,7 @@ def calc_force(r, r_c, mode, size, sigma, epsilon):
     return 4*epsilon*(12*sigma**12/nr**14 - 6*sigma**6/nr**8)*r*(nr <= r_c)
 
 
-def calc_total_force(x, mode, size=None, sigma=1.0, epsilon=1.0, r_c=2.5):
+def calc_system_force(x, mode, size=None, sigma=1.0, epsilon=1.0, r_c=2.5):
     n, _ = x.shape
     left, right = np.triu_indices(n, 1)
     force = np.empty_like(x)
@@ -26,4 +26,4 @@ def calc_total_force(x, mode, size=None, sigma=1.0, epsilon=1.0, r_c=2.5):
         force[right[i]] -= forcelist[i]
     return force
 
-print(calc_total_force(np.array([[0,0], [0.8,0.8], [-0.8,-0.8]], dtype=float),mode='hard', r_c=10))
+# print(calc_total_force(np.array([[0,0], [0.8,0.8], [-0.8,-0.8]], dtype=float),mode='hard', r_c=10))

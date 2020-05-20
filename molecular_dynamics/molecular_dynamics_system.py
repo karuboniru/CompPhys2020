@@ -3,6 +3,7 @@ from random import random
 import numpy as np
 
 from configuration import physics_system
+from lennard_jones_potential import calc_system_force
 
 
 class molecular_dynamics_system(physics_system):
@@ -25,20 +26,31 @@ class molecular_dynamics_system(physics_system):
         for i in range(self.count):
             for j in range(self.dimension):
                 self.velocity[i][j] = random() - 0.5
-        sumv = np.average(self.velocity, axis=0)
-        sumv2 = np.sum(self.velocity**2)/self.count
+        sumv = self.get_mass_center_velocity()
+        sumv2 = self.get_square_velocity_per_particle()
         fs = np.sqrt(self.dimension*self.temp/sumv2)
-        for i in range(self.count):
-            self.velocity[i] -= sumv
-            self.velocity[i] *= fs
-            self.particles[i] -= self.velocity[i]*self.time_step
+        self.velocity -= sumv
+        self.velocity *= fs
+        self.last_particles = self.particles - self.velocity[i]*self.time_step
 
-    def periodic_boundary(self):
-        self.particles %= self.size
+    def get_square_velocity_per_particle(self):
+        return np.sum(self.velocity**2)/self.count
 
-    def hard_boundary(self):
-        if_out = ((self.particles % self.size - self.particles) != 0) * \
-            (-1)+((self.particles % self.size - self.particles) == 0)*1
-        self.particles = (self.particles*if_out) % self.size
-        if (self.velocity is not None):
-            self.velocity *= if_out
+    def get_mass_center_velocity(self):
+        return np.average(self.velocity, axis=0)
+
+    def molecular_dynamics_iter(self, update_velocity=False):
+        force = self.get_force()
+        particles_new = 2*self.particles - self.last_particles + \
+            self.time_step**2*force/self.mass
+        if update_velocity:
+            self.velocity = (
+                particles_new - self.last_particles)/(2*self.time_step)
+        self.last_particles = self.particles
+        self.particles = particles_new
+
+    def get_force(self):
+        return calc_system_force(x=self.particles, mode=self.mode, size=self.size)
+
+    def get_total_energy(self):
+        return self.get_square_velocity_per_particle()*self.mass/2+self.get_potential_energy()

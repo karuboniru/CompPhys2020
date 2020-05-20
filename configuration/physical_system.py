@@ -27,28 +27,39 @@ class physics_system(object):
     def get_potential_energy_for_one(self, particle_id):
         return potential_for_one_particle(self.particles, particle_id=particle_id, mode=self.mode, size=self.size)
 
-    def periodic_boundary(self, particle_id):
-        self.particles[particle_id] %= self.size
+    # def periodic_boundary(self, particle_id):
+    #     self.particles[particle_id] %= self.size
 
-    def hard_boundary(self, particle_id):
-        if_out = ((self.particles[particle_id] % self.size - self.particles[particle_id]) != 0) * \
-            (-1)+((self.particles[particle_id] %
-                   self.size - self.particles[particle_id]) == 0)*1
-        self.particles[particle_id] = (
-            self.particles[particle_id]*if_out) % self.size
-        if (self.velocity is not None):
-            self.velocity[particle_id] *= if_out
+    def hard_boundary(self, particle_id=None):
+        if particle_id is not None:
+            if_out = ((self.particles[particle_id] % self.size - self.particles[particle_id]) != 0) * \
+                (-1)+((self.particles[particle_id] %
+                       self.size - self.particles[particle_id]) == 0)*1
+            self.particles[particle_id] = (
+                self.particles[particle_id]*if_out) % self.size
+            if (self.velocity is not None):
+                self.velocity[particle_id] *= if_out
+        else:
+            if_out = ((self.particles % self.size - self.particles) != 0) * \
+                (-1)+((self.particles % self.size - self.particles) == 0)*1
+            self.particles = (self.particles*if_out) % self.size
+            if (self.velocity is not None):
+                self.velocity *= if_out
+
+    def periodic_boundary(self):
+        self.particles %= self.size
 
     def random_displace(self, particle_id, maxd=0.25):
         self.particles[particle_id] += array(
             [random()-0.5 for i in range(self.dimension)])*maxd  # maybe better than just random place
-        self.reposition(particle_id)
+        if self.mode == 'hard':
+            self.reposition(particle_id)
 
-    def reposition(self, particle_id):
+    def reposition(self, particle_id=None):
         if self.mode == 'hard':
             self.hard_boundary(particle_id)
         if self.mode == 'periodic':
-            self.periodic_boundary(particle_id)
+            self.periodic_boundary()
 
     def hex_place(self, dimension):
         if dimension != 2:
