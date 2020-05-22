@@ -61,12 +61,6 @@ def potential_for_one_particle(x, mode, particle_id, size=None, sigma=1.0, epsil
     if mode == 'hard':
         pass
     elif mode == 'periodic':
-        # following code will generate copies of position_difference_list on every calculation
-        # r = np.linalg.norm((np.abs(position_difference_list)+size/2) %
-        #                    size-size/2, axis=1)
-        # this code below can avoid creating copies of array position_difference_list, can make code faster
-        # because position_difference_list is a bug list (N^2/2) avoiding coping this will be helpful
-        # np.abs(position_difference_list, out=position_difference_list)
         np.add(position_difference_list, size/2, out=position_difference_list)
         np.mod(position_difference_list, size, out=position_difference_list)
         np.add(position_difference_list, -size/2, out=position_difference_list)

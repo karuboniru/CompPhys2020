@@ -1,7 +1,7 @@
 # from .particle import particle
 from random import random
 
-from numpy import array, empty, sqrt
+from numpy import array, empty, sqrt, add, mod
 
 from lennard_jones_potential import pair_potential, potential_for_one_particle
 
@@ -77,3 +77,10 @@ class physics_system(object):
             self.particles[k][0] = (n*sqrt(3) / 2)*lam
             self.particles[k][1] = ((n % 2 != 0)*(1/2) + g)*lam
             k += 1
+
+
+def reduce(r, size):
+    add(r, size/2, out=r)
+    mod(r, size, out=r)
+    add(r, -size/2, out=r)
+    return r

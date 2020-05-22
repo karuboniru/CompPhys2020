@@ -2,7 +2,7 @@ from random import random
 
 import numpy as np
 
-from configuration import physics_system
+from configuration import physics_system, reduce
 from lennard_jones_potential import calc_system_force
 
 
@@ -27,30 +27,37 @@ class molecular_dynamics_system(physics_system):
             for j in range(self.dimension):
                 self.velocity[i][j] = random() - 0.5
         sumv = self.get_mass_center_velocity()
-        sumv2 = self.get_square_velocity_per_particle()
+        sumv2 = self.get_square_velocity()/self.count
         fs = np.sqrt(self.dimension*self.temp/sumv2)
         self.velocity -= sumv
         self.velocity *= fs
-        self.last_particles = self.particles - self.velocity[i]*self.time_step
+        self.last_particles = self.particles - self.velocity*self.time_step
 
-    def get_square_velocity_per_particle(self):
-        return np.sum(self.velocity**2)/self.count
+    def get_square_velocity(self):
+        return np.sum(self.velocity**2)
 
     def get_mass_center_velocity(self):
         return np.average(self.velocity, axis=0)
 
-    def molecular_dynamics_iter(self, update_velocity=False):
+    def molecular_dynamics_iter(self, update_velocity=True):
         force = self.get_force()
+        self.reposition()
         particles_new = 2*self.particles - self.last_particles + \
-            self.time_step**2*force/self.mass
+            (self.time_step**2*force/self.mass)%self.size
         if update_velocity:
-            self.velocity = (
-                particles_new - self.last_particles)/(2*self.time_step)
+            self.velocity = reduce(
+                particles_new - self.last_particles, self.size)/(2*self.time_step)
         self.last_particles = self.particles
         self.particles = particles_new
+        self.reposition()
+
+    def molecular_dynamics_iter_mothod_1(self, update_velocity=True):
+        force = self.get_force()
+        self.particles += self.time_step*self.velocity + 0.5*self.time_step**2*force
+        self.velocity += self.time_step*force
 
     def get_force(self):
         return calc_system_force(x=self.particles, mode=self.mode, size=self.size)
 
     def get_total_energy(self):
-        return self.get_square_velocity_per_particle()*self.mass/2+self.get_potential_energy()
+        return self.get_square_velocity()*self.mass/2+self.get_potential_energy()
