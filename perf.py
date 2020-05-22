@@ -11,7 +11,7 @@ def run():
     temp = 0.728
     size = sqrt(count/rho)
     sim = monte_carlo_sim(maxstep=N, temp=temp, count=count,
-                          size=size, mode='periodic', mass=1, dimension=2, rand=False, start_recording=9000)
+                          size=size, mode='periodic', dimension=2, rand=False, start_recording=9000)
 
     # plt.yscale('log')
     # plt.xscale('log')

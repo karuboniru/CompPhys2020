@@ -7,11 +7,10 @@ from lennard_jones_potential import pair_potential, potential_for_one_particle
 
 
 class physics_system(object):
-    def __init__(self, count, size, dimension, mass, mode, velocity=None, rand=True):
+    def __init__(self, count, size, dimension, mode, velocity=None, rand=True):
         self.size = size
         self.count = count
         self.dimension = dimension
-        self.mass = mass
         self.mode = mode
         if rand:
             self.particles = array([

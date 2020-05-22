@@ -8,9 +8,9 @@ from configuration import physics_system
 
 
 class physical_system_monte_carlo(physics_system):
-    def __init__(self, count, size, dimension, mass, mode, temp, rand):
+    def __init__(self, count, size, dimension, mode, temp, rand):
         super().__init__(count=count, size=size,
-                         dimension=dimension, mass=mass, mode=mode, rand=rand)
+                         dimension=dimension, mode=mode, rand=rand)
         self.temp = temp
 
     def Metropolis_iter(self, maxd, record_true_energy=False):
@@ -18,7 +18,8 @@ class physical_system_monte_carlo(physics_system):
         if record_true_energy:
             self.get_energy_method = self.get_potential_energy
         else:
-            self.get_energy_method = partial(self.get_potential_energy_for_one, particle_id=to_be_replaced)
+            self.get_energy_method = partial(
+                self.get_potential_energy_for_one, particle_id=to_be_replaced)
         now_energy = self.get_energy_method()
         # if not deepcopy, backup will only be a "reference"
         backup = deepcopy(self.particles[to_be_replaced])

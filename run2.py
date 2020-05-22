@@ -10,7 +10,7 @@ start = 0
 interval = 200
 size = sqrt(count/rho)
 sim = monte_carlo_sim(maxstep=N, temp=temp, count=count, size=size, mode='periodic',
-                      mass=1, dimension=2, rand=False, start_recording=start, recording_interval=interval)
+                      dimension=2, rand=False, start_recording=start, recording_interval=interval)
 
 # plt.yscale('log')
 # plt.xscale('log')

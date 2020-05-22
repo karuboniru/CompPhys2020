@@ -8,7 +8,7 @@ rho = 0.8442
 temp = 0.728
 size = sqrt(count/rho)
 sim = monte_carlo_sim(maxstep=N, temp=temp, count=count,
-                      size=size, mode='periodic', mass=1, dimension=2, rand=True)
+                      size=size, mode='periodic', dimension=2, rand=True)
 
 # plt.yscale('log')
 # plt.xscale('log')
