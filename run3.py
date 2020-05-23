@@ -1,36 +1,44 @@
-from matplotlib import pyplot as plt
-from numpy import average, sqrt, array  # noqa
-from molecular_dynamics import molecular_simluation
 from random import seed
-seed(1)
-count = 32
-N = 1000
+
+from matplotlib import pyplot as plt
+from numpy import array, average, sqrt  # noqa
+
+from molecular_dynamics import molecular_simluation
+
+# seed(1)
+count = 100
+N = 10000
 rho = 0.8442
 temp = 0.728
 start = 0
-interval = 200
+interval = 100
+timestep = 0.005
 size = sqrt(count/rho)
 sim = molecular_simluation(maxstep=N, temp=temp, count=count, size=size, mode='periodic',
-                           dimension=2, rand=True, timestep=0.005, nu=0.01)
+                           dimension=2, rand=False, timestep=timestep, nu=1, interval=interval)
+endtime = N*timestep
+energylist = sim.energylist
+end_energylist = array(energylist[len(energylist)//2:])
+end_energylist_pow2 = end_energylist*end_energylist
+avg = average(end_energylist)
+line1, = plt.plot(
+    [start + i*interval*timestep for i in range(len(energylist))], energylist)
+line1.set_label('potenial energy')
+line2 = plt.hlines(avg, xmin=0, xmax=endtime, linestyles='dashed')
+line2.set_label('average after equilibration')
 
-print("ke:", sim.phy_sys.get_square_velocity() /
-      2, "po", sim.phy_sys.get_potential_energy())
-# print(sim.phy_sys.particles)
-print(sim.phy_sys.get_potential_energy())
-sim.begin_simluation()
-# print("ke:", sim.phy_sys.get_square_velocity() /
-#       2, "po", sim.phy_sys.get_potential_energy())
-# print(sim.phy_sys.particles)
-# sim.phy_sys.reposition()
-# plt.yscale('log')
-# plt.xscale('log')
-print(sim.phy_sys.get_mass_center_velocity())
-print(sim.phy_sys.get_potential_energy())
+line3 = plt.hlines(average(energylist), xmin=0,
+                   xmax=endtime, linestyles='dotted')
+line3.set_label('average energy during simluation')
+plt.legend()
+print("average energy per particle", avg/count)
+print("average energy per particle", avg)
+print("fluctuation per particle", (average(end_energylist_pow2) - avg**2)/count)
+print("fluctuation", (average(end_energylist_pow2) - avg**2))
 
-x = []
-y = []
-for i in sim.phy_sys.particles:
-    x.append(i[0])
-    y.append(i[1])
-plt.scatter(x, y)
-plt.show()
+plt.xlabel('time')
+plt.ylabel('energy')
+plt.savefig('fig/md_plot_norand__'+str(N)+'_steps_'+str(count)+'_particles_' +
+            str(rho)+'_rho_'+str(temp)+'_tempure_'+'.eps', format='eps')
+# plt.savefig('fig/starting_fig_md.eps', format='eps')
+# plt.show()

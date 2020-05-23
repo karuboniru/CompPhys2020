@@ -1,0 +1,4 @@
+average energy per particle -2.42098950064102
+average energy per particle -242.09895006410198
+fluctuation per particle 0.41481362590930076
+fluctuation 41.481362590930075

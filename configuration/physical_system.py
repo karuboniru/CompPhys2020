@@ -20,6 +20,15 @@ class physics_system(object):
             self.hex_place(dimension)
         self.velocity = velocity
 
+    def no_overlap(self):
+        for i in range(self.count):
+            while True:
+                if(self.get_potential_energy_for_one(i) == float('inf')):
+                    self.particles[i] = [
+                        random()*size for j in range(dimension)]
+                else:
+                    break
+
     def get_potential_energy(self):
         return pair_potential(self.particles, mode=self.mode, size=self.size)
 
@@ -47,12 +56,6 @@ class physics_system(object):
 
     def periodic_boundary(self):
         self.particles %= self.size
-
-    def random_displace(self, particle_id, maxd=0.25):
-        self.particles[particle_id] += array(
-            [random()-0.5 for i in range(self.dimension)])*maxd  # maybe better than just random place
-        if self.mode == 'hard':
-            self.reposition(particle_id)
 
     def reposition(self, particle_id=None):
         if self.mode == 'hard':

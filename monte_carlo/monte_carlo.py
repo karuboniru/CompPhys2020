@@ -1,10 +1,10 @@
-from .physics_system_mc import physical_system_monte_carlo
+from .physics_system_mc import monte_carlo_system
 
 
-class monte_carlo_sim(object):
+class monte_carlo(object):
     def __init__(self, count, size, dimension, mode, temp, maxstep, rand=True,
                  start_recording=float("inf"), recording_interval=100):
-        self.phy_sys = physical_system_monte_carlo(
+        self.phy_sys = monte_carlo_system(
             count, size, dimension, mode=mode, temp=temp, rand=rand)
         self.maxstep = maxstep
         self.count = count

@@ -2,12 +2,12 @@ from copy import deepcopy
 from functools import partial
 from random import randint, random
 
-from numpy import exp
+from numpy import exp, array
 
 from configuration import physics_system
 
 
-class physical_system_monte_carlo(physics_system):
+class monte_carlo_system(physics_system):
     def __init__(self, count, size, dimension, mode, temp, rand):
         super().__init__(count=count, size=size,
                          dimension=dimension, mode=mode, rand=rand)
@@ -43,3 +43,9 @@ class physical_system_monte_carlo(physics_system):
         else:
             self.particles[to_be_replaced] = backup
             return False, now_energy
+
+    def random_displace(self, particle_id, maxd=0.25):
+        self.particles[particle_id] += array(
+            [random()-0.5 for i in range(self.dimension)])*maxd  # maybe better than just random place
+        if self.mode == 'hard':
+            self.reposition(particle_id)

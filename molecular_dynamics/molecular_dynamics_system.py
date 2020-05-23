@@ -4,19 +4,19 @@ import numpy as np
 
 from configuration import physics_system, reduce
 from lennard_jones_potential import calc_system_force
-from monte_carlo import monte_carlo_sim
+from monte_carlo import monte_carlo
 
 
 class molecular_dynamics_system(physics_system):
     def __init__(self, count, size, dimension, mode, temp, rand, time_step, nu=0.1):
         # init a physical system with random place and we will assign velocities later
+        self.nu = nu
         if rand:
             self.size = size
             self.count = count
             self.dimension = dimension
-            self.nu = nu
             self.mode = mode
-            self.particles = monte_carlo_sim(
+            self.particles = monte_carlo(
                 count, size, dimension, mode, temp, 3000, rand).phy_sys.particles
             self.velocity = np.empty((count, dimension))
         else:
@@ -58,9 +58,10 @@ class molecular_dynamics_system(physics_system):
         if update_velocity:
             self.velocity = reduce(
                 particles_new - self.last_particles, self.size)/(2*self.time_step)
-        self.last_particles = self.particles
+
         self.particles = particles_new
         self.reposition()
+
 
     def molecular_dynamics_iter_mothod_1(self, update_velocity=True):
         force = self.get_force()
@@ -77,8 +78,8 @@ class molecular_dynamics_system(physics_system):
         self.molecular_dynamics_iter()
         # Andersen heat bath
         # self.velocity += dv
-        tempa = self.get_square_velocity()
-        temp = tempa/(self.dimension*self.count)
+        # tempa = self.get_square_velocity()
+        # temp = tempa/(self.dimension*self.count)
         for i in range(self.count):
             if(random() < self.nu*self.time_step):
                 for j in range(self.dimension):

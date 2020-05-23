@@ -1,6 +1,6 @@
 from matplotlib import pyplot as plt  # noqa
 from numpy import average, sqrt  # noqa
-from monte_carlo import monte_carlo_sim
+from monte_carlo import monte_carlo
 import cProfile
 
 
@@ -10,7 +10,7 @@ def run():
     rho = 0.8442
     temp = 0.728
     size = sqrt(count/rho)
-    sim = monte_carlo_sim(maxstep=N, temp=temp, count=count,
+    sim = monte_carlo(maxstep=N, temp=temp, count=count,
                           size=size, mode='periodic', dimension=2, rand=False, start_recording=9000)
 
     # plt.yscale('log')

@@ -1,0 +1,212 @@
+\documentclass[UTF8,a4paper,no-math]{article}
+\usepackage[fontset=windows,scheme=plain]{ctex}
+\usepackage{amsmath, amsfonts, physics}
+\usepackage{tabularx,tabulary,booktabs}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{float}
+\usepackage{enumitem}
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=black,bookmarksopen=true,pdfproducer={xdvipdfmx}]{hyperref}
+
+\geometry{left=2.5cm,right=2.5cm,top=2.54cm,bottom=2.54cm}
+
+\renewcommand{\vec}[1]{\bm{#1}}
+% \everymath{\displaystyle}
+\lhead{Qiyu Yan}
+\rhead{Final Term Report of Computional Computational Physics Course 2020}
+\pagestyle{fancy}
+\title{Monte Carlo and Molecular Dynamics Simulations of a Lennard–Jones Liquid}
+\author{Qiyu Yan 严启宇\\ \small{2017K8009907053}}
+
+
+\begin{document}
+\maketitle
+
+\tableofcontents
+\section{Introduction}
+\subsection{Physics Model}
+\subsubsection{Cut-off Potential}
+In this simulation, I am using Lennard–Jones potential with a cut-off:
+\begin{equation}
+	U_{i j} \equiv U\left(r_{i j}\right)=\left\{
+	\begin{array}{cc}4 \epsilon\left[\left(\frac{\sigma}{r_{i j}}\right)^{12}-\left(\frac{\sigma}{r_{i j}}\right)^{6}\right] & \text { if } r_{i j} \leq r_{c} \\
+		0                                                                                                           & \text { if } r_{i j}>r_{c}\end{array}
+	\right.
+	\label{eqn:l-j}
+\end{equation}
+By cutting-off Lennard–Jones potential, we can avoid adding infinite periodic particles' contribution to the potential energy calculation.
+But there is some price from this cut-off: potential energy will be no longer precise. But the difference should be small that we can estimate the
+correction from that.
+\subsubsection{Dimensionless Numbers}
+All calculations are done with dimensionless numbers, which means by choosing unit as:
+\begin{equation}
+	\left\{
+	\begin{aligned}
+		x^{*} & = \frac{x}{\sigma}                                   \\
+		v^{*} & = v\frac{t^{*}}{\sigma}                              \\
+		t^{*} & = t\left(\frac{\epsilon}{m \sigma^{2}} \right)^{1/2} \\
+		E^{*} & = \frac{E}{\epsilon}                                 \\
+		T^{*} & = T \frac{k_{\text{B}}}{\epsilon}
+	\end{aligned}
+	\right.
+\end{equation}
+By using the left hand variables above, it means that we can emit $\sigma, \, \epsilon, \, k_\text{B}, \, m$ by simply specifying them as ``$1$''
+without loss of generality.
+\subsubsection{Boundary Conditions}
+In this simulation, there is 2 available selections on boundary conditions: \textit{hard boundaries} and \textit{periodic boundary conditions}.
+\begin{enumerate}
+	\item \textit{Hard Boundaries Conditions}
+
+	      Particles can not exit the box, which means they will be reflected from the walls once trying to leave the box. Different from what in teacher's material
+	      I am the particle always reflect in both MC and MD simulation. This makes code reusing easier.
+	\item \textit{Periodic Boundary Conditions}
+
+	      Periodic boundary conditions means that there is infinite identical boxes in a true system. One particle leaves from a boundary, another one come in from opposite
+	      boundary.
+	      \begin{figure}[h]
+		      \centering
+		      \includegraphics[width=0.3\textwidth]{fig/1024px-Limiteperiodicite.png}
+		      \caption{Periodic Boundary Conditions, By I, Grimlock, CC BY-SA 3.0. \href{https://commons.wikimedia.org/wiki/File:Limiteperiodicite.svg}{Link}}
+		      \label{fig:Periodic}
+	      \end{figure}
+	      Of course we will treat the two particle as one. And this also means that when two particle are near different boundaries, that can be ``near'' to each other. So when calculating
+	      potential energy and forces, we should always focus on the nearest choose in all possible periodic positions.
+
+	      This can be done with trick, give 1-D situation for example: two particle's position difference can be expressed by a scalar $\Delta x = x_1 - x_2$, in a periodic boundary system with
+	      period is $L$, that the best choice for their position difference in all available periodic can be chosen as:
+	      \begin{equation}
+		      \Delta x' = \left(\Delta x + \frac{L}{2}\right)\bmod L - \frac{L}{2}
+		      \label{eqn:periodic}
+	      \end{equation}
+	      Expanding this formula to 2-D or n-D situation is trivial, just by applying \eqref{eqn:periodic} to all dimension, and when all dimension has a smallest distance, the total distance will
+	      be minimized.
+
+	      And for a periodic system with a period $L > r_c$, see \eqref{eqn:l-j}, there cannot be more than one choice that makes $r < r_c$, so we should focus only on the minimized one. So
+	      \textit{calculate the interaction energies for each particle by summing up the pair interactions with all the neighbors within the chosen cut-off distance} is reduced to calculate the minimized periodic
+	      distance for each pair particle, this can definitely speed up the calculation.
+\end{enumerate}
+\subsection{Coding}
+This time all coding work is done with Python, and NumPy makes my program much faster than using loops, maximize the usage of ufunc and vectorized calculation. And do avoid any possible copies is important.
+And since I am using class in Python to make coding simpler.
+
+\subsubsection{Code Structure}
+My code contains those modules:
+\begin{enumerate}
+	\item configuration
+
+	      Define general particle system behavior and methods, such as placing particle, calculating potential energy, proceeding periodic boundaries in class \textbf{physics\underline{~~}system}, the class will be base class for
+	      \textbf{physical\underline{~~}system\underline{~~}monte\underline{~~}carlo} and \textbf{molecular\underline{~~}dynamics\underline{~~}system}.
+	\item lennard\underline{~~}jones\underline{~~}potential
+
+	      Functions for Lennard–Jones potential related calculating, including calculating total potential energy, potential energy related to one particle, force on each particle. All codes are vectorized by NumPy to make calculating
+	      faster.
+	\item molecular\underline{~~}dynamics
+
+	      \begin{itemize}
+		      \item Class \textbf{molecular\underline{~~}dynamics\underline{~~}system}, derived from \textbf{physics\underline{~~}system}, adds functions to assign velocities by certain temperature, doing adiabatic or thermostatic iteration
+		            on the system. And added class methods to get total energy, total kinetic energy, which will be useful when doing checks.
+		      \item Class \textbf{molecular\underline{~~}dynamics}, a wrapper to initialize \textbf{molecular\underline{~~}dynamics\underline{~~}system}, do iteration and save interested information from \textbf{molecular\underline{~~}dynamics\underline{~~}system}
+	      \end{itemize}
+	\item monte\underline{~~}carlo
+
+	      \begin{itemize}
+		      \item Class \textbf{monte\underline{~~}carlo\underline{~~}system}, similar to \textbf{molecular\underline{~~}dynamics\underline{~~}system}, this is derived from \textbf{physics\underline{~~}system}, by adding functions to do Metropolis
+		            iteration.
+		      \item Class \textbf{monte\underline{~~}carlo} a wrapper to initialize \textbf{monte\underline{~~}carlo\underline{~~}system} and save useful information for later usage.
+	      \end{itemize}
+	\item test\underline{~~}cases
+
+	      Since most code is contained into classes, and testing class by \textbf{doctest} is not a easy work, so I switched to \textbf{PyTest}. PyTest is a testing framework whose test cases itself is a piece of Python code. Using Python code to test python is
+	      easier than using doctest's string match.
+\end{enumerate}
+But the testing cases didn't cover anything, I didn't come up a way to test molecular dynamics code automatically, so I did that manually, by checking during several adiabatic iterations, if total energy conserves and if center of mass velocity remains to be zero. During
+those checking, I found some interesting problem arose, which will be talked about later.
+
+\section{Equilibration}
+Setting fixed temperature $\rho$ and density $T$, run Monte Carlo simulations and molecular dynamics simulations to gain potential energy per step, and calculate
+$\expval{U} = \frac{1}{N}\sum_{T=1}^N U(T)$
+\subsection{$T_1 =0.728,\, \rho_1 = 0.8442$}
+First, by a long time simulation on periodic Monte Carlo with random initialized position, I can draw a scatter plot of the ``final state''. As in Figure \ref{fig:scatter},
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.4\textwidth]{fig/rand_scatter_70000_steps_200_particles_0.8442_rho_0.728_tempure_.eps}
+	\caption{Monte Carlo with random initialized position, $T_1 =0.728,\, \rho_1 = 0.8442$, 70000 steps with 200 particles}
+	\label{fig:scatter}
+\end{figure}
+I can see some hexagonal like clusters in the figure, so, in the following code, I will use hexagonal lattice as non-random initialization.
+
+When doing molecular dynamics with random initializing, there is a problem that total energy (potential+kinetic) always change, after looking into the problem, it seems that the force on
+particles can be extremely high (\~$1\times 10^{8}$) for first step, this makes the simulation broken. The problem is from the high potential energy of random placement. So, before iteration by
+molecular dynamics methods, I have performed 1000 Monte Carlo iterations to lower the potential energy.
+\subsubsection{Random Placement, Periodic Boundaries}
+First choose random placement as initialize configuration, and we can get that:
+\begin{figure}[H]
+	\centering
+	\begin{minipage}[t]{0.45\textwidth}
+		\centering
+		\includegraphics[height=0.2\textheight]{fig/plot_norand_30000_steps_100_particles_0.8442_rho_0.728_tempure_.eps}
+		\caption{Random placement, Monte Carlo simulation, at 30000 steps, with 100 particles}
+	\end{minipage}\hspace{0.5cm}
+	\begin{minipage}[t]{0.45\textwidth}
+		\centering
+		\includegraphics[height=0.2\textheight]{fig/md_plot_20000_steps_100_particles_0.8442_rho_0.728_tempure_.eps}
+		\caption{Random placement, molecular dynamics simulation, at 20000 steps, with 100 particles, time step is $0.05$}
+	\end{minipage}
+\end{figure}
+And the calculated total potential energy and its fluctuation are in Table \ref{tab:rand1}:
+\begin{table}[H]
+	\centering
+	\caption{Random placement, simulation results}
+	\begin{tabular}{rcc}
+		\toprule
+		\toprule
+		                       & Monte Carlo & molecular dynamics \\ \midrule
+		total potential energy & -230.15     & -242.64            \\
+		square fluctuation     & 34.1        & 41.4               \\
+		fluctuation            & 5.83        & 6.43               \\
+		\bottomrule
+	\end{tabular}%
+	\label{tab:rand1}%
+\end{table}%  
+Fluctuation $\delta U$ in table \ref{tab:rand1} is defined as:
+\begin{equation}
+	\delta U^{2}=\expval{U^2} - \expval{U}^2	\label{eq:flu}
+\end{equation}
+
+But the fluctuation and total potential energy can change between runs, the number is a random chosen one. Change in fluctuation may come from size,
+we have learnt that total energy fluctuation is proportional to its size. This can be verified by changing it size and calculate $\frac{\delta U}{N}$,
+it is all near $0.05$ for this temperature/density selection.
+
+\subsubsection{Hexagonal Lattice, Periodic Boundaries}
+I set initial configuration for the particles with hexagonal lattice with $r = 1.1$, the number is near the lowest energy for the lattice Structure.
+\begin{figure}[H]
+	\centering
+	\begin{minipage}[t]{0.45\textwidth}
+		\centering
+		\includegraphics[height=0.2\textheight]{fig/plot_40000_steps_100_particles_0.8442_rho_0.728_tempure_1.eps}
+		\caption{Hexagonal placement, Monte Carlo simulation, at 30000 steps, with 100 particles}
+	\end{minipage}\hspace{0.5cm}
+	\begin{minipage}[t]{0.45\textwidth}
+		\centering
+		\includegraphics[height=0.2\textheight]{fig/md_plot_norand__10000_steps_100_particles_0.8442_rho_0.728_tempure_.eps}
+		\caption{Hexagonal placement, molecular dynamics simulation, at 20000 steps, with 100 particles, time step is $0.05$}
+	\end{minipage}
+\end{figure}
+\begin{table}[H]
+	\centering
+	\caption{Hexagonal placement, simulation results}
+	\begin{tabular}{rcc}
+		\toprule
+		\toprule
+		                       & Monte Carlo & molecular dynamics \\ \midrule
+		total potential energy & -242.97     & -241.15            \\
+		square fluctuation     & 31.9        & 42.2               \\
+		fluctuation            & 5.65        & 6.53               \\
+		\bottomrule
+	\end{tabular}%
+	\label{tab:rand2}%
+\end{table}%  
+As in Table \ref{tab:rand2}, total potential energy results from the two simulation is very close, while there is still some difference 
+in the fluctuation.
+\end{document}
