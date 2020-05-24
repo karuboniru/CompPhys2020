@@ -25,7 +25,7 @@ class physics_system(object):
             while True:
                 if(self.get_potential_energy_for_one(i) == float('inf')):
                     self.particles[i] = [
-                        random()*size for j in range(dimension)]
+                        random()*self.size for j in range(self.dimension)]
                 else:
                     break
 

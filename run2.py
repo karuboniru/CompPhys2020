@@ -23,14 +23,15 @@ avg = average(end_energylist)
 line1, = plt.plot(
     [start + i*interval for i in range(len(energylist))], energylist)
 line1.set_label('potenial energy')
-line2= plt.hlines(avg, xmin=0, xmax=N, linestyles='dashed')
+line2 = plt.hlines(avg, xmin=0, xmax=N, linestyles='dashed')
 line2.set_label('average after equilibration')
 
-line3=plt.hlines(average(energylist), xmin=0, xmax=N, linestyles='dotted')
+line3 = plt.hlines(average(energylist), xmin=0, xmax=N, linestyles='dotted')
 line3.set_label('average energy during simluation')
 plt.legend()
 print("average energy per particle", avg/count)
 print("fluctuation per particle", (average(end_energylist_pow2) - avg**2)/count)
-plt.savefig('fig/plot_'+str(N)+'_steps_'+str(count)+'_particles_'+str(rho)+'_rho_'+str(temp)+'_tempure_'+str(rand)+'.eps', format='eps')
+plt.savefig('fig/plot_'+str(N)+'_steps_'+str(count)+'_particles_' +
+            str(rho)+'_rho_'+str(temp)+'_tempure_'+str(rand)+'.eps', format='eps')
 
 # plt.show()

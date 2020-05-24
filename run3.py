@@ -1,5 +1,3 @@
-from random import seed
-
 from matplotlib import pyplot as plt
 from numpy import array, average, sqrt  # noqa
 
@@ -8,8 +6,8 @@ from molecular_dynamics import molecular_simluation
 # seed(1)
 count = 100
 N = 10000
-rho = 0.8442
-temp = 0.728
+rho = 0.1
+temp = 1.0
 start = 0
 interval = 100
 timestep = 0.005
@@ -32,13 +30,15 @@ line3 = plt.hlines(average(energylist), xmin=0,
 line3.set_label('average energy during simluation')
 plt.legend()
 print("average energy per particle", avg/count)
-print("average energy per particle", avg)
-print("fluctuation per particle", (average(end_energylist_pow2) - avg**2)/count)
-print("fluctuation", (average(end_energylist_pow2) - avg**2))
+print("average energy", avg)
+print("square fluctuation", (average(end_energylist_pow2) - avg**2))
 
+print("fluctuation per particle", sqrt(
+    (average(end_energylist_pow2) - avg**2))/count)
+print("fluctuation", sqrt((average(end_energylist_pow2) - avg**2)))
 plt.xlabel('time')
 plt.ylabel('energy')
-plt.savefig('fig/md_plot_norand__'+str(N)+'_steps_'+str(count)+'_particles_' +
+plt.savefig('fig/md_plot_norand_hard_'+str(N)+'_steps_'+str(count)+'_particles_' +
             str(rho)+'_rho_'+str(temp)+'_tempure_'+'.eps', format='eps')
 # plt.savefig('fig/starting_fig_md.eps', format='eps')
 # plt.show()

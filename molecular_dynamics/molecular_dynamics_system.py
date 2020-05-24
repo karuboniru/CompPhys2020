@@ -62,7 +62,6 @@ class molecular_dynamics_system(physics_system):
         self.particles = particles_new
         self.reposition()
 
-
     def molecular_dynamics_iter_mothod_1(self, update_velocity=True):
         force = self.get_force()
         self.particles += self.time_step*self.velocity + 0.5*self.time_step**2*force

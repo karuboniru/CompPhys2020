@@ -15,9 +15,9 @@ class molecular_simluation(object):
     def do_simluation(self):
         for i in range(self.maxstep):
             self.phy_sys.molecular_dynamics_iter_heat()
-            if i%self.interval == 0:
+            if i % self.interval == 0:
                 self.energylist.append(self.phy_sys.get_potential_energy())
-            if i%100 ==0:
+            if i % 100 == 0:
                 print('step\t', i)
 
     # def begin_simluation(self):
