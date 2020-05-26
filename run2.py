@@ -4,9 +4,9 @@ from numpy import array, average, sqrt  # noqa
 from monte_carlo import monte_carlo
 
 count = 100
-N = 100000
-rho = 0.8442
-temp = 0.728
+N = 80000
+rho = 0.1
+temp = 1.0
 start = 0
 interval = 200
 rand = False
@@ -31,7 +31,6 @@ line3.set_label('average energy during simluation')
 plt.legend()
 print("average energy per particle", avg/count)
 print("fluctuation per particle", (average(end_energylist_pow2) - avg**2)/count)
-plt.savefig('fig/plot_'+str(N)+'_steps_'+str(count)+'_particles_' +
-            str(rho)+'_rho_'+str(temp)+'_tempure_'+str(rand)+'.eps', format='eps')
+plt.savefig('exp2_hex_peri_mc.eps', format='eps')
 
 # plt.show()

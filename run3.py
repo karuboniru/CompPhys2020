@@ -5,7 +5,7 @@ from molecular_dynamics import molecular_simluation
 
 # seed(1)
 count = 100
-N = 10000
+N = 20000
 rho = 0.1
 temp = 1.0
 start = 0
@@ -13,7 +13,7 @@ interval = 100
 timestep = 0.005
 size = sqrt(count/rho)
 sim = molecular_simluation(maxstep=N, temp=temp, count=count, size=size, mode='periodic',
-                           dimension=2, rand=False, timestep=timestep, nu=1, interval=interval)
+                           dimension=2, rand=False, timestep=timestep, nu=3.0, interval=interval)
 endtime = N*timestep
 energylist = sim.energylist
 end_energylist = array(energylist[len(energylist)//2:])
@@ -38,7 +38,6 @@ print("fluctuation per particle", sqrt(
 print("fluctuation", sqrt((average(end_energylist_pow2) - avg**2)))
 plt.xlabel('time')
 plt.ylabel('energy')
-plt.savefig('fig/md_plot_norand_hard_'+str(N)+'_steps_'+str(count)+'_particles_' +
-            str(rho)+'_rho_'+str(temp)+'_tempure_'+'.eps', format='eps')
+plt.savefig('fig/exp2_hex_hard_md.eps', format='eps')
 # plt.savefig('fig/starting_fig_md.eps', format='eps')
-# plt.show()
+plt.show()

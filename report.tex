@@ -139,7 +139,7 @@ First, by a long time simulation on periodic Monte Carlo with random initialized
 Here, we can see some hexagonal like clusters in the figure, so, in the following code, I will use hexagonal lattice as non-random initialization.
 
 When doing molecular dynamics with random initializing, there is a problem that total energy (potential+kinetic) always change, after looking into the problem, it seems that the force on
-particles can be extremely high (\~$1\times 10^{8}$) for first step, this makes the simulation broken. The problem is from the high potential energy of random placement. So, before iteration by
+particles can be extremely high ($1\times 10^{8}$) for first step, this makes the simulation broken. The problem is from the high potential energy of random placement. So, before iteration by
 molecular dynamics methods, I have performed 1000 Monte Carlo iterations to lower the potential energy.
 \subsubsection{Random Placement, Periodic Boundaries}
 First choose random placement as initialize configuration, and we can get that:
@@ -164,9 +164,9 @@ And the calculated total potential energy and its fluctuation are in Table \ref{
 		\toprule
 		\toprule
 		                       & Monte Carlo & molecular dynamics \\ \midrule
-		total potential energy & -230.15     & -242.64            \\
-		square fluctuation     & 34.1        & 41.4               \\
-		fluctuation            & 5.83        & 6.43               \\
+		total potential energy & $-230.15$   & $-242.64$          \\
+		square fluctuation     & $34.1$      & $41.4$             \\
+		fluctuation            & $5.83$      & $6.43$             \\
 		\bottomrule
 	\end{tabular}%
 	\label{tab:rand1}%
@@ -188,7 +188,7 @@ I set initial configuration for the particles with hexagonal lattice with $r = 1
 	\begin{minipage}[t]{0.45\textwidth}
 		\centering
 		\includegraphics[height=0.2\textheight]{fig/plot_40000_steps_100_particles_0.8442_rho_0.728_tempure_1.eps}
-		\caption{Hexagonal placement, periodic boundaries, Monte Carlo simulation, at 30000 steps, with 100 particles}
+		\caption{Hexagonal placement, periodic boundaries, Monte Carlo simulation, at 40000 steps, with 100 particles}
 	\end{minipage}\hspace{0.5cm}
 	\begin{minipage}[t]{0.45\textwidth}
 		\centering
@@ -203,16 +203,16 @@ I set initial configuration for the particles with hexagonal lattice with $r = 1
 		\toprule
 		\toprule
 		                       & Monte Carlo & molecular dynamics \\ \midrule
-		total potential energy & -242.97     & -241.15            \\
-		square fluctuation     & 31.9        & 42.2               \\
-		fluctuation            & 5.65        & 6.53               \\
+		total potential energy & $-242.97$   & $-241.15$          \\
+		square fluctuation     & $31.9$      & $42.2$             \\
+		fluctuation            & $5.65$      & $6.53$             \\
 		\bottomrule
 	\end{tabular}%
 	\label{tab:hex1}%
 \end{table}%  
 As in Table \ref{tab:hex1}, total potential energy results from the two simulation is very close, while there is still some difference
 in the fluctuation.
-\subsubsection{Random Placement, Periodic Boundaries}
+\subsubsection{Random Placement, Hard Boundaries}
 \begin{figure}[H]
 	\centering
 	\begin{minipage}[t]{0.45\textwidth}
@@ -233,9 +233,9 @@ in the fluctuation.
 		\toprule
 		\toprule
 		                       & Monte Carlo & molecular dynamics \\ \midrule
-		total potential energy & -192.47     & -191.12            \\
-		square fluctuation     & 24.7        & 25.6               \\
-		fluctuation            & 4.97        & 5.05               \\
+		total potential energy & $-192.47$   & $-191.12$          \\
+		square fluctuation     & $24.7$      & $25.6$             \\
+		fluctuation            & $4.97$      & $5.05$             \\
 		\bottomrule
 	\end{tabular}%
 	\label{tab:rand_hard1}%
@@ -264,9 +264,9 @@ this difference is from the size effect from the hard boundaries.
 		\toprule
 		\toprule
 		                       & Monte Carlo & molecular dynamics \\ \midrule
-		total potential energy & -213.32     & -193.21            \\
-		square fluctuation     & 21.7        & 27.40              \\
-		fluctuation            & 4.66        & 5.23               \\
+		total potential energy & $-213.32$   & $-193.21$          \\
+		square fluctuation     & $21.7$      & $27.40$            \\
+		fluctuation            & $4.66$      & $5.23$             \\
 		\bottomrule
 	\end{tabular}%
 	\label{tab:hex2}%
@@ -281,8 +281,8 @@ The calculation of tail correction, as listed in the book (3.2.2), can be writte
 This is trivial for periodic boundaries and $L>r_c$. So, by doing this integration with Mathematica, it gives:
 \begin{equation}
 	\begin{aligned}
-		U^{\text{tail}} &= \frac{N \rho}{2} \int_{r_{c}}^{\infty} \operatorname{dr} u(r) 2 \pi r \\
-						&= \frac{N \rho \epsilon \pi \sigma^6\left(-5 r_c^6 + 2 \sigma^6\right)}{5 r_c^{10}}.
+		U^{\text{tail}} & = \frac{N \rho}{2} \int_{r_{c}}^{\infty} \operatorname{dr} u(r) 2 \pi r              \\
+		                & = \frac{N \rho \epsilon \pi \sigma^6\left(-5 r_c^6 + 2 \sigma^6\right)}{5 r_c^{10}}.
 	\end{aligned}
 \end{equation}
 Let $r_c = 2.5, \, \sigma = \epsilon = 1, \,\rho = 0.8442, \,N = 100$, it gives:
@@ -295,4 +295,122 @@ For hard boundaries, particle distance has a upper limit, in this case, the uppe
 \end{equation*}
 
 \subsection{$T_1 =1.0,\, \rho_1 = 0.1$}
+\subsubsection{Random Placement, Periodic Boundaries}
+First choose random placement as initialize configuration, and we can get that:
+\begin{figure}[H]
+	\centering
+	\begin{minipage}[t]{0.45\textwidth}
+		\centering
+		\includegraphics[height=0.2\textheight]{fig/exp2_rand_peri_mc.eps}
+		\caption{Random placement, Monte Carlo simulation, at 100000 steps, with 100 particles}
+	\end{minipage}\hspace{0.5cm}
+	\begin{minipage}[t]{0.45\textwidth}
+		\centering
+		\includegraphics[height=0.2\textheight]{fig/exp2_rand_peri_md.eps}
+		\caption{Random placement, molecular dynamics simulation, at 20000 steps, with 100 particles, time step is $0.05$}
+	\end{minipage}
+\end{figure}
+And the calculated total potential energy and its fluctuation are in Table \ref{tab:rand_p}:
+\begin{table}[H]
+	\centering
+	\caption{Random placement, periodic boundaries}
+	\begin{tabular}{rcc}
+		\toprule
+		\toprule
+		                       & Monte Carlo & molecular dynamics \\ \midrule
+		total potential energy & $-30.83$    & $-24.51$           \\
+		square fluctuation     & $16.9$      & $15.8$             \\
+		fluctuation            & $4.12$      & $3.98$             \\
+		\bottomrule
+	\end{tabular}%
+	\label{tab:rand_p}%
+\end{table}%  
+
+\subsubsection{Hexagonal Lattice, Periodic Boundaries}
+\begin{figure}[H]
+	\centering
+	\begin{minipage}[t]{0.45\textwidth}
+		\centering
+		\includegraphics[height=0.2\textheight]{fig/exp2_hex_peri_mc.eps}
+		\caption{Hexagonal placement, periodic boundaries, Monte Carlo simulation, at 100000 steps, with 100 particles}
+	\end{minipage}\hspace{0.5cm}
+	\begin{minipage}[t]{0.45\textwidth}
+		\centering
+		\includegraphics[height=0.2\textheight]{fig/exp2_hex_peri_md.eps}
+		\caption{Hexagonal placement, periodic boundaries, molecular dynamics simulation, at 20000 steps, with 100 particles, time step is $0.05$}
+	\end{minipage}
+\end{figure}
+\begin{table}[H]
+	\centering
+	\caption{Hexagonal placement, periodic boundaries}
+	\begin{tabular}{rcc}
+		\toprule
+		\toprule
+		                       & Monte Carlo & molecular dynamics \\ \midrule
+		total potential energy & $-30.79$    & $-30.61$           \\
+		square fluctuation     & $15.0$      & $16.2$             \\
+		fluctuation            & $3.86$      & $4.02$             \\
+		\bottomrule
+	\end{tabular}%
+	\label{tab:hex_md_1}%
+\end{table}%  
+
+\subsubsection{Random Placement, Hard Boundaries}
+\begin{figure}[H]
+	\centering
+	\begin{minipage}[t]{0.45\textwidth}
+		\centering
+		\includegraphics[height=0.2\textheight]{fig/exp2_rand_hard_mc.eps}
+		\caption{Random placement, hard boundaries, Monte Carlo simulation, at 100000 steps, with 100 particles}
+	\end{minipage}\hspace{0.5cm}
+	\begin{minipage}[t]{0.45\textwidth}
+		\centering
+		\includegraphics[height=0.2\textheight]{fig/exp2_rand_hard_md.eps}
+		\caption{Random placement, hard boundaries, molecular dynamics simulation, at 20000 steps, with 100 particles, time step is $0.05$}
+	\end{minipage}
+\end{figure}
+\begin{table}[H]
+	\centering
+	\caption{Hexagonal placement, periodic boundaries}
+	\begin{tabular}{rcc}
+		\toprule
+		\toprule
+		                       & Monte Carlo & molecular dynamics \\ \midrule
+		total potential energy & $-31.08$    & $-21.89$           \\
+		square fluctuation     & $19.3$      & $17.4$             \\
+		fluctuation            & $4.38$      & $4.17$             \\
+		\bottomrule
+	\end{tabular}%
+	\label{tab:rand_hard_2}%
+\end{table}%  
+
+\subsubsection{Hexagonal Lattice, Hard Boundaries}
+\begin{figure}[H]
+	\centering
+	\begin{minipage}[t]{0.45\textwidth}
+		\centering
+		\includegraphics[height=0.2\textheight]{fig/exp2_hex_hard_mc.eps}
+		\caption{Hexagonal placement, hard boundaries, Monte Carlo simulation, at 80000 steps, with 100 particles}
+	\end{minipage}\hspace{0.5cm}
+	\begin{minipage}[t]{0.45\textwidth}
+		\centering
+		\includegraphics[height=0.2\textheight]{fig/md_plot_norand_hard_10000_steps_100_particles_0.8442_rho_0.728_tempure_.eps}
+		\caption{Hexagonal placement, hard boundaries, molecular dynamics simulation, at 10000 steps, with 100 particles, time step is $0.05$}
+	\end{minipage}
+\end{figure}
+\begin{table}[H]
+	\centering
+	\caption{Hexagonal placement, periodic boundaries}
+	\begin{tabular}{rcc}
+		\toprule
+		\toprule
+		                       & Monte Carlo & molecular dynamics \\ \midrule
+		total potential energy & $-30.28$    & $-34.45$           \\
+		square fluctuation     & $21.2$      & $21.9$             \\
+		fluctuation            & $4.60$      & $4.68$             \\
+		\bottomrule
+	\end{tabular}%
+	\label{tab:hex_hard_2}%
+\end{table}%  
+
 \end{document}

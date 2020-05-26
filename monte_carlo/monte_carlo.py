@@ -16,20 +16,22 @@ class monte_carlo(object):
 
     def do_simluation(self):
         def maxd(i):
-            if i < 5*self.count:
-                return 2
-            if i < 30*self.count:
-                return 1
-            if i < 50*self.count:
-                return 0.5
-            if i < 90*self.count:
-                return 0.2
-            return 0.1
+            # if i < 5*self.count:
+            #     return 2
+            # if i < 30*self.count:
+            #     return 1
+            # if i < 50*self.count:
+            #     return 0.5
+            # if i < 90*self.count:
+            #     return 0.2
+            return 2.5
         for i in range(self.maxstep):
             _, energy = self.phy_sys.Metropolis_iter(
                 maxd(i), record_true_energy=((i > self.start_recording) and (i % self.recording_interval == 0)))
             if ((i > self.start_recording) and (i % self.recording_interval == 0)):
                 self.energy_per_step.append(energy)
+            if i%10000 == 0:
+                print('on step', i)
 
     def get_energy_per_step(self):
         return self.energy_per_step

@@ -7,12 +7,13 @@ def calc_force(r, r_c, mode, size, sigma, epsilon):
         np.add(r, size/2, out=r)
         np.mod(r, size, out=r)
         np.add(r, -size/2, out=r)
-    nr_tmp = np.linalg.norm(r, axis=1)
+    nr = np.linalg.norm(r, axis=1)
+    num = (nr <= r_c)*4*epsilon*(12*sigma**12/nr**14 - 6*sigma**6/nr**8)
     # nr_tmp = np.where(nr_tmp == 0.0, 1e-2, nr_tmp)
-    nr = np.transpose(np.array([nr_tmp for i in range(d)]))
+    num_1 = np.transpose(np.array([num]*d))
     # if(nr >= r_c):
     #     return np.array(np.zeros_like(r))
-    return (nr <= r_c)*4*epsilon*(12*sigma**12/nr**14 - 6*sigma**6/nr**8)*r
+    return num_1*r
 
 
 def calc_system_force(x, mode, size=None, sigma=1.0, epsilon=1.0, r_c=2.5):

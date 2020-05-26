@@ -4,11 +4,11 @@ from numpy import array, average, sqrt  # noqa
 from monte_carlo import monte_carlo
 
 count = 100
-N = 80000
+N = 100000
 rho = 0.1
 temp = 1.0
 start = 0
-interval = 200
+interval = 100
 rand = False
 size = sqrt(count/rho)
 sim = monte_carlo(maxstep=N, temp=temp, count=count, size=size, mode='periodic',
@@ -38,6 +38,6 @@ print("square fluctuation", (average(end_energylist_pow2) - avg**2))
 print("fluctuation per particle", sqrt(
     (average(end_energylist_pow2) - avg**2))/count)
 print("fluctuation", sqrt((average(end_energylist_pow2) - avg**2)))
-# plt.savefig('fig/plot_hb_norand_'+str(N)+'_steps_'+str(count)+'_particles_'+str(rho)+'_rho_'+str(temp)+'_tempure_1'+'.eps', format='eps')
+plt.savefig('fig/exp2_hex_hard_mc.eps', format='eps')
 # print('fig/plot_hb_'+str(N)+'_steps_'+str(count)+'_particles_'+str(rho)+'_rho_'+str(temp)+'_tempure_1'+'.eps')
-plt.show()
+# plt.show()
