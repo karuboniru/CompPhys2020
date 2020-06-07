@@ -4,15 +4,15 @@ from numpy import array, average, sqrt  # noqa
 from monte_carlo import monte_carlo
 
 count = 100
-N = 80000
-rho = 0.1
-temp = 1.0
+N = 1000000
+rho = 0.8442
+temp = 0.728
 start = 0
-interval = 200
+interval = 500
 rand = False
 size = sqrt(count/rho)
 sim = monte_carlo(maxstep=N, temp=temp, count=count, size=size, mode='periodic',
-                  dimension=2, rand=rand, start_recording=start, recording_interval=interval)
+                  dimension=2, rand=rand, start_recording=0, recording_interval=interval)
 
 # plt.yscale('log')
 # plt.xscale('log')
@@ -31,6 +31,6 @@ line3.set_label('average energy during simluation')
 plt.legend()
 print("average energy per particle", avg/count)
 print("fluctuation per particle", (average(end_energylist_pow2) - avg**2)/count)
-plt.savefig('exp2_hex_peri_mc.eps', format='eps')
+# plt.savefig('exp2_hex_peri_mc.eps', format='eps')
 
-# plt.show()
+plt.show()

@@ -47,5 +47,6 @@ class monte_carlo_system(physics_system):
     def random_displace(self, particle_id, maxd=0.25):
         self.particles[particle_id] += array(
             [random()-0.5 for i in range(self.dimension)])*maxd  # maybe better than just random place
+        # self.particles[particle_id] = [random()*self.size for i in range(self.dimension)]
         if self.mode == 'hard':
             self.reposition(particle_id)

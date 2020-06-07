@@ -1,5 +1,4 @@
-\documentclass[UTF8,a4paper,no-math]{article}
-\usepackage[fontset=windows,scheme=plain]{ctex}
+\documentclass[UTF8,a4paper]{article}
 \usepackage{amsmath, amsfonts, physics}
 \usepackage{tabularx,tabulary,booktabs}
 \usepackage{geometry}
@@ -17,7 +16,7 @@
 \rhead{Final Term Report of Computional Computational Physics Course 2020}
 \pagestyle{fancy}
 \title{Monte Carlo and Molecular Dynamics Simulations of a Lennard–Jones Liquid}
-\author{Qiyu Yan 严启宇\\ \small{2017K8009907053}}
+\author{Qiyu Yan\\ \small{2017K8009907053}}
 
 
 \begin{document}
@@ -126,7 +125,7 @@ those checking, I found some interesting problem arose, which will be talked abo
 \section{Equilibration}
 Setting fixed temperature $\rho$ and density $T$, run Monte Carlo simulations and molecular dynamics simulations to gain potential energy per step, and calculate
 $\expval{U} = \frac{1}{N}\sum_{T=1}^N U(T)$
-\subsection{$T_1 =0.728,\, \rho_1 = 0.8442$}
+\subsection{$T =0.728,\, \rho = 0.8442$}
 
 First, by a long time simulation on periodic Monte Carlo with random initialized position, I can draw a scatter plot of the ``final state''. As in Figure \ref{fig:scatter},
 \begin{figure}[h]
@@ -284,6 +283,7 @@ This is trivial for periodic boundaries and $L>r_c$. So, by doing this integrati
 		U^{\text{tail}} & = \frac{N \rho}{2} \int_{r_{c}}^{\infty} \operatorname{dr} u(r) 2 \pi r              \\
 		                & = \frac{N \rho \epsilon \pi \sigma^6\left(-5 r_c^6 + 2 \sigma^6\right)}{5 r_c^{10}}.
 	\end{aligned}
+	\label{eq:tail}
 \end{equation}
 Let $r_c = 2.5, \, \sigma = \epsilon = 1, \,\rho = 0.8442, \,N = 100$, it gives:
 \begin{equation*}
@@ -294,7 +294,7 @@ For hard boundaries, particle distance has a upper limit, in this case, the uppe
 	U^{\text{tail}}_{\text{hard}} \approx -6.778 + 0.424 = -6.353 \,.
 \end{equation*}
 
-\subsection{$T_1 =1.0,\, \rho_1 = 0.1$}
+\subsection{$T =1.0,\, \rho = 0.1$}
 \subsubsection{Random Placement, Periodic Boundaries}
 First choose random placement as initialize configuration, and we can get that:
 \begin{figure}[H]
@@ -412,5 +412,109 @@ And the calculated total potential energy and its fluctuation are in Table \ref{
 	\end{tabular}%
 	\label{tab:hex_hard_2}%
 \end{table}%  
+\subsubsection{Tail Correction}
+Equation \eqref{eq:tail} also fits here. So, by putting $r_c = 2.5, \, \sigma = \epsilon = 1, \,\rho = 0.8442, \,N = 100$ into equation \eqref{eq:tail}, we can 
+get tail correction for periodic boundary conditions:
+\begin{equation}
+	U^{\text{tail}}_{\text{periodic}} = -0.802\,.
+\end{equation}
+And for hard boundaries, since the size of system is big enough (for $100$ particles, $L = \sqrt{100/0.1} = 31.62$), the error from finite size is so small that we can 
+emit them:
+\begin{equation}
+	U^{\text{tail}}_{\text{hard}} \approx U^{\text{tail}}_{\text{periodic}} = -0.802\,.
+\end{equation}
 
+\section{Finite Size Scaling}
+By varying system size with density fixed, run Monte Carlo simulations, and plot system's total energy and fluctuation against it particle number, we can 
+do extrapolation to predict the behavior of the system is given as infinite size. and by plotting against $1/N$ rather than $N$ will make the extrapolation 
+easier.
+
+\subsection{$T =0.728,\, \rho = 0.8442$, Periodic Boundaries}
+In this simulation, we get:
+\begin{figure}[H]
+	\centering
+	\begin{minipage}[t]{0.45\textwidth}
+		\centering
+		\includegraphics[height=0.2\textheight]{fig/sc_exp1_e.eps}
+		\caption{Average Energy}
+	\end{minipage}\hspace{0.5cm}
+	\begin{minipage}[t]{0.45\textwidth}
+		\centering
+		\includegraphics[height=0.2\textheight]{fig/sc_exp1_p.eps}
+		\caption{fluctuations}
+	\end{minipage}\\
+	\begin{minipage}[t]{0.6\textwidth}
+		\centering
+		\includegraphics[height=0.2\textheight]{fig/sc_exp1_loge.eps}
+		\caption{Average Energy, in log scale}
+	\end{minipage}
+\end{figure}
+With periodic boundaries, we can seen that as $1/N\to 0$, $\ln \left| E_\text{tot} \right|$ raises linearly, so by going a linear fit by 
+
+\subsection{$T =0.728,\, \rho = 0.8442$, Hard Boundaries}
+In this simulation, we get:
+\begin{figure}[H]
+	\centering
+	\begin{minipage}[t]{0.45\textwidth}
+		\centering
+		\includegraphics[height=0.2\textheight]{fig/sc_exp1_e_hard.eps}
+		\caption{Average Energy}
+	\end{minipage}\hspace{0.5cm}
+	\begin{minipage}[t]{0.45\textwidth}
+		\centering
+		\includegraphics[height=0.2\textheight]{fig/sc_exp1_p_hard.eps}
+		\caption{fluctuations}
+	\end{minipage}\\
+	\begin{minipage}[t]{0.6\textwidth}
+		\centering
+		\includegraphics[height=0.2\textheight]{fig/sc_exp1_loge_hard.eps}
+		\caption{Average Energy, in log scale}
+	\end{minipage}
+\end{figure}
+
+
+\subsection{$T =1.0,\, \rho = 0.1$, Periodic Boundaries}
+In this simulation, we get:
+\begin{figure}[H]
+	\centering
+	\begin{minipage}[t]{0.45\textwidth}
+		\centering
+		\includegraphics[height=0.2\textheight]{fig/sc_exp2_e.eps}
+		\caption{Average Energy}
+	\end{minipage}\hspace{0.5cm}
+	\begin{minipage}[t]{0.45\textwidth}
+		\centering
+		\includegraphics[height=0.2\textheight]{fig/sc_exp2_p.eps}
+		\caption{fluctuations}
+	\end{minipage}\\
+	\begin{minipage}[t]{0.6\textwidth}
+		\centering
+		\includegraphics[height=0.2\textheight]{fig/sc_exp2_loge.eps}
+		\caption{Average Energy, in log scale}
+	\end{minipage}
+\end{figure}
+
+\subsection{$T =1.0,\, \rho = 0.1$, Hard Boundaries}
+In this simulation, we get:
+\begin{figure}[H]
+	\centering
+	\begin{minipage}[t]{0.45\textwidth}
+		\centering
+		\includegraphics[height=0.2\textheight]{fig/sc_exp2_e_hard.eps}
+		\caption{Average Energy}
+	\end{minipage}\hspace{0.5cm}
+	\begin{minipage}[t]{0.45\textwidth}
+		\centering
+		\includegraphics[height=0.2\textheight]{fig/sc_exp2_p_hard.eps}
+		\caption{fluctuations}
+	\end{minipage}\\
+	\begin{minipage}[t]{0.6\textwidth}
+		\centering
+		\includegraphics[height=0.2\textheight]{fig/sc_exp2_loge_hard.eps}
+		\caption{Average Energy, in log scale}
+	\end{minipage}
+\end{figure}
+
+\section{Radial distribution function}
+Because when radius goes beyond half the system size
 \end{document}

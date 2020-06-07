@@ -24,14 +24,14 @@ class monte_carlo(object):
             #     return 0.5
             # if i < 90*self.count:
             #     return 0.2
-            return 2.5
+            return 1.0
         for i in range(self.maxstep):
             _, energy = self.phy_sys.Metropolis_iter(
                 maxd(i), record_true_energy=((i > self.start_recording) and (i % self.recording_interval == 0)))
             if ((i > self.start_recording) and (i % self.recording_interval == 0)):
                 self.energy_per_step.append(energy)
-            if i%10000 == 0:
-                print('on step', i)
+            # if i%10000 == 0:
+            #     print('on step', i)
 
     def get_energy_per_step(self):
         return self.energy_per_step
