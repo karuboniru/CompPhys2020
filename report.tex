@@ -1,5 +1,5 @@
 \documentclass[UTF8,a4paper]{article}
-\usepackage{amsmath, amsfonts, physics}
+\usepackage{amsmath, amsfonts, physics, siunitx}
 \usepackage{tabularx,tabulary,booktabs}
 \usepackage{geometry}
 \usepackage{graphicx}
@@ -435,21 +435,36 @@ In this simulation, we get:
 	\centering
 	\begin{minipage}[t]{0.45\textwidth}
 		\centering
-		\includegraphics[height=0.2\textheight]{fig/sc_exp1_e.eps}
+		\includegraphics[height=0.2\textheight]{Root Fit/fit_exp1_p.eps}
 		\caption{Average Energy}
 	\end{minipage}\hspace{0.5cm}
 	\begin{minipage}[t]{0.45\textwidth}
 		\centering
-		\includegraphics[height=0.2\textheight]{fig/sc_exp1_p.eps}
+		\includegraphics[height=0.2\textheight]{Root Fit/fit_exp1_flu.eps}
 		\caption{fluctuations}
-	\end{minipage}\\
-	\begin{minipage}[t]{0.6\textwidth}
-		\centering
-		\includegraphics[height=0.2\textheight]{fig/sc_exp1_loge.eps}
-		\caption{Average Energy, in log scale}
 	\end{minipage}
 \end{figure}
-With periodic boundaries, we can seen that as $1/N\to 0$, $\ln \left| E_\text{tot} \right|$ raises linearly, so by going a linear fit by 
+With periodic boundaries, we can seen that as $1/N\to 0$, $\ln \left| E_\text{tot} \right|$ raises linearly, so by going a fit with model $E = k\cdot \left(\frac{1}{N}\right)^{b}$ with CERN ROOT, 
+by assigning energy's $1\sigma$ range with fluctuations, we can get:
+\begin{equation}
+	\left\{
+		\begin{aligned}
+			k &= \num[separate-uncertainty = true]{-2.38+-0.28}\\
+			b &= \num[separate-uncertainty = true]{-9.99+-0.02}
+		\end{aligned}
+	\right.
+\end{equation}
+This result is somehow reasonable: energy per particle is a constant $\num[separate-uncertainty = true]{-2.38+-0.28}$ when $b = 1$. And when it comes to fluctuations, we can see $\delta U^2$ fit with same model 
+\begin{equation}
+	\left\{
+		\begin{aligned}
+			k &= 0.58\\
+			b &= -0.92
+		\end{aligned}
+	\right.
+\end{equation}
+We can get $\delta U^2\propto N^{0.92}$ compared to thermostatic result: $\delta U^2\propto N$, the difference may come from finite size effect or 
+statistical error. 
 
 \subsection{$T =0.728,\, \rho = 0.8442$, Hard Boundaries}
 In this simulation, we get:
@@ -457,20 +472,35 @@ In this simulation, we get:
 	\centering
 	\begin{minipage}[t]{0.45\textwidth}
 		\centering
-		\includegraphics[height=0.2\textheight]{fig/sc_exp1_e_hard.eps}
+		\includegraphics[height=0.2\textheight]{Root Fit/fit_exp1_h.eps}
 		\caption{Average Energy}
 	\end{minipage}\hspace{0.5cm}
 	\begin{minipage}[t]{0.45\textwidth}
 		\centering
-		\includegraphics[height=0.2\textheight]{fig/sc_exp1_p_hard.eps}
+		\includegraphics[height=0.2\textheight]{Root Fit/fit_exp1_flu_h.eps}
 		\caption{fluctuations}
-	\end{minipage}\\
-	\begin{minipage}[t]{0.6\textwidth}
-		\centering
-		\includegraphics[height=0.2\textheight]{fig/sc_exp1_loge_hard.eps}
-		\caption{Average Energy, in log scale}
 	\end{minipage}
 \end{figure}
+With same fitting method, we can tell that for average energy
+\begin{equation}
+	\left\{
+		\begin{aligned}
+			k &= \num[separate-uncertainty = true]{-2.97+-0.91}\\
+			b &= \num[separate-uncertainty = true]{-0.876+-0.06}
+		\end{aligned}
+	\right.
+\end{equation}
+This suggests that with hard boundaries, we can not easily do extrapolation, since $b$ is far away $1$.
+
+And for fluctuation
+\begin{equation}
+	\left\{
+		\begin{aligned}
+			k &= 0.52\\
+			b &= -0.84
+		\end{aligned}
+	\right.
+\end{equation}
 
 
 \subsection{$T =1.0,\, \rho = 0.1$, Periodic Boundaries}
@@ -479,20 +509,35 @@ In this simulation, we get:
 	\centering
 	\begin{minipage}[t]{0.45\textwidth}
 		\centering
-		\includegraphics[height=0.2\textheight]{fig/sc_exp2_e.eps}
+		\includegraphics[height=0.2\textheight]{Root Fit/fit_exp2.eps}
 		\caption{Average Energy}
 	\end{minipage}\hspace{0.5cm}
 	\begin{minipage}[t]{0.45\textwidth}
 		\centering
-		\includegraphics[height=0.2\textheight]{fig/sc_exp2_p.eps}
+		\includegraphics[height=0.2\textheight]{Root Fit/fit_exp2_f.eps}
 		\caption{fluctuations}
-	\end{minipage}\\
-	\begin{minipage}[t]{0.6\textwidth}
-		\centering
-		\includegraphics[height=0.2\textheight]{fig/sc_exp2_loge.eps}
-		\caption{Average Energy, in log scale}
 	\end{minipage}
 \end{figure}
+\begin{equation}
+	\left\{
+		\begin{aligned}
+			k &= \num[separate-uncertainty = true]{-0.275+-0.023}\\
+			b &= \num[separate-uncertainty = true]{-1.02+-0.16}
+		\end{aligned}
+	\right.
+\end{equation}
+Because $b=1$ is within its range of the fit's $1\sigma$ range, we can extrapolation energy per particles to $N\to \inf$, $\num[separate-uncertainty = true]{-0.275+-0.023}$.
+
+And for fluctuation
+\begin{equation}
+	\left\{
+		\begin{aligned}
+			k &= 0.11\\
+			b &= -1.10
+		\end{aligned}
+	\right.
+\end{equation}
+Still, take error from the simulation info consideration, we can say that $\delta U^2\propto N$
 
 \subsection{$T =1.0,\, \rho = 0.1$, Hard Boundaries}
 In this simulation, we get:
@@ -500,21 +545,38 @@ In this simulation, we get:
 	\centering
 	\begin{minipage}[t]{0.45\textwidth}
 		\centering
-		\includegraphics[height=0.2\textheight]{fig/sc_exp2_e_hard.eps}
+		\includegraphics[height=0.2\textheight]{Root Fit/fit_exp2_h.eps}
 		\caption{Average Energy}
 	\end{minipage}\hspace{0.5cm}
 	\begin{minipage}[t]{0.45\textwidth}
 		\centering
-		\includegraphics[height=0.2\textheight]{fig/sc_exp2_p_hard.eps}
+		\includegraphics[height=0.2\textheight]{Root Fit/fit_exp2_f_h.eps}
 		\caption{fluctuations}
-	\end{minipage}\\
-	\begin{minipage}[t]{0.6\textwidth}
-		\centering
-		\includegraphics[height=0.2\textheight]{fig/sc_exp2_loge_hard.eps}
-		\caption{Average Energy, in log scale}
 	\end{minipage}
 \end{figure}
 
+\begin{equation}
+	\left\{
+		\begin{aligned}
+			k &= \num[separate-uncertainty = true]{-0.285+-0.024}\\
+			b &= \num[separate-uncertainty = true]{-1.00+-0.17}
+		\end{aligned}
+	\right.
+\end{equation}
+Because $b=1$ is within its range of the fit's $1\sigma$, we can extrapolation energy per particles to $N\to \inf$, $\num[separate-uncertainty = true]{-0.275+-0.023}$. 
+Extrapolation works here for hard periodic boundaries suggest that for small density, difference between the two boundaries will be small enough.
+
+And for fluctuation
+\begin{equation}
+	\left\{
+		\begin{aligned}
+			k &= 0.13\\
+			b &= -1.07
+		\end{aligned}
+	\right.
+\end{equation}
+Still we can say, approximately, $\delta U^2\propto N$.
+
 \section{Radial distribution function}
-Because when radius goes beyond half the system size
+By simulation and save final particles positions, choose one 
 \end{document}
