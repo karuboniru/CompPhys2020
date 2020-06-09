@@ -22,10 +22,10 @@ void macro1_f()
          0.005263157894736842,
          0.005};
     std::vector<double> y_vals;
-    auto rand = new TRandom(10);
+    auto rand = new TRandom(130);
     y_vals.resize(x_vals.size());
     for(int i = 0; i < x_vals.size(); i++){
-        y_vals[i] = 0.5755 * TMath::Power(x_vals[i], -0.99) + rand->Gaus(0, i*0.2);
+        y_vals[i] = 0.5755 * TMath::Power(x_vals[i], -0.99) + rand->Gaus(0, 3-0.3*i);
     }
 
     // Instance of the graph

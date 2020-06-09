@@ -429,6 +429,8 @@ By varying system size with density fixed, run Monte Carlo simulations, and plot
 do extrapolation to predict the behavior of the system is given as infinite size. and by plotting against $1/N$ rather than $N$ will make the extrapolation 
 easier.
 
+Those following simulations are done with a random initialization. 
+
 \subsection{$T =0.728,\, \rho = 0.8442$, Periodic Boundaries}
 In this simulation, we get:
 \begin{figure}[H]
@@ -458,13 +460,12 @@ This result is somehow reasonable: energy per particle is a constant $\num[separ
 \begin{equation}
 	\left\{
 		\begin{aligned}
-			k &= 0.58\\
-			b &= -0.92
+			k &= 0.54\\
+			b &= -1.00
 		\end{aligned}
 	\right.
 \end{equation}
-We can get $\delta U^2\propto N^{0.92}$ compared to thermostatic result: $\delta U^2\propto N$, the difference may come from finite size effect or 
-statistical error. 
+We can get $\delta U^2\propto N^{1.00}$ matches thermostatic result: $\delta U^2\propto N$.
 
 \subsection{$T =0.728,\, \rho = 0.8442$, Hard Boundaries}
 In this simulation, we get:
@@ -496,12 +497,12 @@ And for fluctuation
 \begin{equation}
 	\left\{
 		\begin{aligned}
-			k &= 0.52\\
-			b &= -0.84
+			k &= 0.50\\
+			b &= -1.02
 		\end{aligned}
 	\right.
 \end{equation}
-
+$\delta U^2\propto N^{1.02}$ approximately, $\delta U^2\propto N$
 
 \subsection{$T =1.0,\, \rho = 0.1$, Periodic Boundaries}
 In this simulation, we get:
@@ -526,7 +527,7 @@ In this simulation, we get:
 		\end{aligned}
 	\right.
 \end{equation}
-Because $b=1$ is within its range of the fit's $1\sigma$ range, we can extrapolation energy per particles to $N\to \inf$, $\num[separate-uncertainty = true]{-0.275+-0.023}$.
+Because $b=1$ is within its range of the fit's $1\sigma$ range, we can extrapolation energy per particles to $N\to \infty$, $\num[separate-uncertainty = true]{-0.275+-0.023}$.
 
 And for fluctuation
 \begin{equation}
@@ -563,7 +564,7 @@ In this simulation, we get:
 		\end{aligned}
 	\right.
 \end{equation}
-Because $b=1$ is within its range of the fit's $1\sigma$, we can extrapolation energy per particles to $N\to \inf$, $\num[separate-uncertainty = true]{-0.275+-0.023}$. 
+Because $b=1$ is within its range of the fit's $1\sigma$, we can extrapolation energy per particles to $N\to \infty$, $\num[separate-uncertainty = true]{-0.275+-0.023}$. 
 Extrapolation works here for hard periodic boundaries suggest that for small density, difference between the two boundaries will be small enough.
 
 And for fluctuation
@@ -578,5 +579,59 @@ And for fluctuation
 Still we can say, approximately, $\delta U^2\propto N$.
 
 \section{Radial distribution function}
-By simulation and save final particles positions, choose one 
+By simulation and save final particles positions, choose one and calculate its distance between other particles. Draw the result into a histogram. As following, 
+all simulation is done with a random initialization:
+
+\subsection{$T =0.728,\, \rho = 0.8442$}
+\begin{figure}[h]
+	\centering
+	\includegraphics[height=0.2\textheight]{fig/exp1_rdf_peri_1.eps}
+	\caption{histogram from simulation with $T =0.728,\, \rho = 0.8442,\, N=100$}
+	\label{fig:rdf-1}
+\end{figure}
+Figure \ref{fig:rdf-1} is done with average histogram for all particles, and we can see a peak at near $x = 1.2$, and a wavy curve after. The change in density get smaller as 
+r raises, finally stop on near average density.
+
+By adding energy per bin, we can get particle energy from the histogram, it is $-2.360$. Slightly different from pervious simulation but within fluctuation range $U\pm\delta U$.
+
+I guess, in this picture, the system is in liquid state, with medium coherence length.
+
+\subsection{$T =1.0,\, \rho = 0.1$}
+\begin{figure}[h]
+	\centering
+	\includegraphics[height=0.2\textheight]{fig/exp2_rdf_peri_1.eps}
+	\caption{histogram from simulation with $T =1.0,\, \rho = 0.1, \,  N = 100$}
+	\label{fig:rdf-2}
+\end{figure}
+This time there is no such structure, here we can see that the radius distribution is likely uniform after one peak. Energy per particle is $-0.26$, still has a slightly difference but within 
+fluctuation range $U\pm\delta U$, the two results matches.
+
+This time, the system is in gas state, with small coherence length.
+\subsection{$T =0.9,\, \rho = 1.1$}
+\begin{figure}[h]
+	\centering
+	\includegraphics[height=0.2\textheight]{fig/rdf_exp3.eps}
+	\caption{histogram from simulation with $T =0.9,\, \rho = 1.1, \,  N = 100$}
+	\label{fig:rdf-3}
+\end{figure}
+With high density, we can see the approximate periodic structure in Figure \ref{fig:rdf-3}, this figure, clearly shows one peak after one, finally stop changing and stop at average density.
+
+And energy per particle is $2.49$ from the histogram. Is is positive, which suggests that is very pressured. And the first peak is near to 6, is hexagonal's coordination number.
+
+System is in solid state, with a high coherence length.
+\section{Equation of state}
+Use virial and pressure from the book:
+\begin{equation}
+	\left\{
+		\begin{aligned}
+			P&=\frac{\rho}{\beta}+\frac{\text{vir}}{V} \\
+			\text{vir}&=\frac{1}{2} \sum_{i} \sum_{j>i} \mathbf{f}\left(\mathbf{r}_{i j}\right) \cdot \mathbf{r}_{i j}
+		\end{aligned}
+	\right.
+\end{equation}
+And the tail correction:
+\begin{align}
+	p_{\text{tail}} &= 
+\end{align}
+
 \end{document}

@@ -7,7 +7,7 @@
 #include "TLatex.h"
 #include <vector>
 
-void macro2_f()
+void macro5_f()
 {
     std::vector<double> x_vals =
         {0.01,
@@ -21,12 +21,18 @@ void macro2_f()
          0.005555555555555556,
          0.005263157894736842,
          0.005};
-    std::vector<double> y_vals;
-    auto rand = new TRandom(5);
-    y_vals.resize(x_vals.size());
-    for(int i = 0; i < x_vals.size(); i++){
-        y_vals[i] = 0.53 * TMath::Power(x_vals[i], -0.85) + rand->Gaus(0, 3-0.2*i);
-    }
+    std::vector<double> y_vals =
+        {8.254336907048128,
+         3.6607364349474665,
+         38.88278347089363,
+         3.667867915966781,
+         18.6702909906453,
+         60.31127202769858,
+         3.586805039085448,
+         3.8127590309013613,
+         36.89474992195028,
+         46.41335808264557,
+         4.59873962943675};
 
     // Instance of the graph
     TGraphErrors graph(x_vals.size(), &x_vals[0], &y_vals[0], nullptr, nullptr);
@@ -36,19 +42,19 @@ void macro2_f()
     graph.SetMarkerColor(kBlue);
     graph.SetLineColor(kBlue);
     auto func = new TF1("func", "[0]*TMath::Power(x, [1])", 0, 1);
-    func->SetParameter(0, 10);
-    func->SetParameter(1, -0.99);
+    func->SetParameter(0, -10);
+    func->SetParameter(1, -0.5);
     graph.Fit(func);
+    // The canvas on which we'll draw the graph
+    auto mycanvas = new TCanvas();
     auto leg = new TLegend(.7, .7, .9, .9);
     leg->AddEntry(&graph, "Results");
     leg->AddEntry(func, "Fit");
-    // The canvas on which we'll draw the graph
-    auto mycanvas = new TCanvas();
     // mycanvas->SetLogy();
     // mycanvas->SetLogx();
     // Draw the graph !
     graph.DrawClone("APEL");
     leg->DrawClone("Same");
 
-    mycanvas->Print("fit_exp1_flu_h.eps");
+    mycanvas->Print("fit_exp1_f_p_h.eps");
 }

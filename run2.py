@@ -4,12 +4,12 @@ from numpy import array, average, sqrt  # noqa
 from monte_carlo import monte_carlo
 
 count = 100
-N = 1000000
-rho = 0.8442
-temp = 0.728
+N = 50000
+rho = 1.1
+temp = 0.9
 start = 0
 interval = 500
-rand = False
+rand = True
 size = sqrt(count/rho)
 sim = monte_carlo(maxstep=N, temp=temp, count=count, size=size, mode='periodic',
                   dimension=2, rand=rand, start_recording=0, recording_interval=interval)
