@@ -81,7 +81,7 @@ In this simulation, there is 2 available selections on boundary conditions: \tex
 	      Expanding this formula to 2-D or n-D situation is trivial, just by applying \eqref{eqn:periodic} to all dimension, and when all dimension has a smallest distance, the total distance will
 	      be minimized.
 
-	      And for a periodic system with a period $L > r_c$, see \eqref{eqn:l-j}, there cannot be more than one choice that makes $r < r_c$, so we should focus only on the minimized one. So
+	      And for a periodic system with a period $L > r_\text{c}$, see \eqref{eqn:l-j}, there cannot be more than one choice that makes $r < r_\text{c}$, so we should focus only on the minimized one. So
 	      \textit{calculate the interaction energies for each particle by summing up the pair interactions with all the neighbors within the chosen cut-off distance} is reduced to calculate the minimized periodic
 	      distance for each pair particle, this can definitely speed up the calculation.
 \end{enumerate}
@@ -164,8 +164,8 @@ And the calculated total potential energy and its fluctuation are in Table \ref{
 		\toprule
 		                       & Monte Carlo & molecular dynamics \\ \midrule
 		total potential energy & $-230.15$   & $-242.64$          \\
-		square fluctuation     & $34.1$      & $41.4$             \\
-		fluctuation            & $5.83$      & $6.43$             \\
+		fluctuation            & $34.1$      & $41.4$             \\
+		sqrt fluctuation       & $5.83$      & $6.43$             \\
 		\bottomrule
 	\end{tabular}%
 	\label{tab:rand1}%
@@ -203,8 +203,8 @@ I set initial configuration for the particles with hexagonal lattice with $r = 1
 		\toprule
 		                       & Monte Carlo & molecular dynamics \\ \midrule
 		total potential energy & $-242.97$   & $-241.15$          \\
-		square fluctuation     & $31.9$      & $42.2$             \\
-		fluctuation            & $5.65$      & $6.53$             \\
+		fluctuation            & $31.9$      & $42.2$             \\
+		sqrt fluctuation       & $5.65$      & $6.53$             \\
 		\bottomrule
 	\end{tabular}%
 	\label{tab:hex1}%
@@ -233,8 +233,8 @@ in the fluctuation.
 		\toprule
 		                       & Monte Carlo & molecular dynamics \\ \midrule
 		total potential energy & $-192.47$   & $-191.12$          \\
-		square fluctuation     & $24.7$      & $25.6$             \\
-		fluctuation            & $4.97$      & $5.05$             \\
+		fluctuation            & $24.7$      & $25.6$             \\
+		sqrt fluctuation       & $4.97$      & $5.05$             \\
 		\bottomrule
 	\end{tabular}%
 	\label{tab:rand_hard1}%
@@ -264,8 +264,8 @@ this difference is from the size effect from the hard boundaries.
 		\toprule
 		                       & Monte Carlo & molecular dynamics \\ \midrule
 		total potential energy & $-213.32$   & $-193.21$          \\
-		square fluctuation     & $21.7$      & $27.40$            \\
-		fluctuation            & $4.66$      & $5.23$             \\
+		fluctuation            & $21.7$      & $27.40$            \\
+		sqrt fluctuation       & $4.66$      & $5.23$             \\
 		\bottomrule
 	\end{tabular}%
 	\label{tab:hex2}%
@@ -277,15 +277,15 @@ The calculation of tail correction, as listed in the book (3.2.2), can be writte
 \begin{equation}
 	U^{\text{tail}} = \frac{N \rho}{2} \int_{r_{c}}^{\infty} \operatorname{dr} u(r) 2 \pi r.
 \end{equation}
-This is trivial for periodic boundaries and $L>r_c$. So, by doing this integration with Mathematica, it gives:
+This is trivial for periodic boundaries and $L>r_\text{c}$. So, by doing this integration with Mathematica, it gives:
 \begin{equation}
 	\begin{aligned}
-		U^{\text{tail}} & = \frac{N \rho}{2} \int_{r_{c}}^{\infty} \operatorname{dr} u(r) 2 \pi r              \\
-		                & = \frac{N \rho \epsilon \pi \sigma^6\left(-5 r_c^6 + 2 \sigma^6\right)}{5 r_c^{10}}.
+		U^{\text{tail}} & = \frac{N \rho}{2} \int_{r_{c}}^{\infty} \operatorname{dr} u(r) 2 \pi r                            \\
+		                & = \frac{N \rho \epsilon \pi \sigma^6\left(-5 r_\text{c}^6 + 2 \sigma^6\right)}{5 r_\text{c}^{10}}.
 	\end{aligned}
 	\label{eq:tail}
 \end{equation}
-Let $r_c = 2.5, \, \sigma = \epsilon = 1, \,\rho = 0.8442, \,N = 100$, it gives:
+Let $r_\text{c} = 2.5, \, \sigma = \epsilon = 1, \,\rho = 0.8442, \,N = 100$, it gives:
 \begin{equation*}
 	U^{\text{tail}}_{\text{periodic}} = -6.778\,.
 \end{equation*}
@@ -319,13 +319,14 @@ And the calculated total potential energy and its fluctuation are in Table \ref{
 		\toprule
 		                       & Monte Carlo & molecular dynamics \\ \midrule
 		total potential energy & $-30.83$    & $-24.51$           \\
-		square fluctuation     & $16.9$      & $15.8$             \\
-		fluctuation            & $4.12$      & $3.98$             \\
+		fluctuation            & $16.9$      & $15.8$             \\
+		sqrt fluctuation       & $4.12$      & $3.98$             \\
 		\bottomrule
 	\end{tabular}%
 	\label{tab:rand_p}%
 \end{table}%  
-
+There is also some slight difference between the two results (but with in the $1\sigma$ range of fluctuation), but by comparing different runs with this exactly temperature and density and different 
+initializing, it seems that \textit{molecular dynamics}'s results are not so good. Maybe the iteration time isn't long enough.
 \subsubsection{Hexagonal Lattice, Periodic Boundaries}
 \begin{figure}[H]
 	\centering
@@ -348,13 +349,14 @@ And the calculated total potential energy and its fluctuation are in Table \ref{
 		\toprule
 		                       & Monte Carlo & molecular dynamics \\ \midrule
 		total potential energy & $-30.79$    & $-30.61$           \\
-		square fluctuation     & $15.0$      & $16.2$             \\
-		fluctuation            & $3.86$      & $4.02$             \\
+		fluctuation            & $15.0$      & $16.2$             \\
+		sqrt fluctuation       & $3.86$      & $4.02$             \\
 		\bottomrule
 	\end{tabular}%
 	\label{tab:hex_md_1}%
 \end{table}%  
-
+This time the results matches. Actually, I would expect no difference at this low density situation, Table \ref{tab:hex_md_1} and Table \ref{tab:rand_p} will show any significant difference. 
+So results for \textit{molecular dynamics} is more reliable here.
 \subsubsection{Random Placement, Hard Boundaries}
 \begin{figure}[H]
 	\centering
@@ -377,20 +379,20 @@ And the calculated total potential energy and its fluctuation are in Table \ref{
 		\toprule
 		                       & Monte Carlo & molecular dynamics \\ \midrule
 		total potential energy & $-31.08$    & $-21.89$           \\
-		square fluctuation     & $19.3$      & $17.4$             \\
-		fluctuation            & $4.38$      & $4.17$             \\
+		fluctuation            & $19.3$      & $17.4$             \\
+		sqrt fluctuation       & $4.38$      & $4.17$             \\
 		\bottomrule
 	\end{tabular}%
 	\label{tab:rand_hard_2}%
 \end{table}%  
-
+Same difference here. This time it is out of $1\sigma$ range of fluctuation. I think its also from run time.
 \subsubsection{Hexagonal Lattice, Hard Boundaries}
 \begin{figure}[H]
 	\centering
 	\begin{minipage}[t]{0.45\textwidth}
 		\centering
 		\includegraphics[height=0.2\textheight]{fig/exp2_hex_hard_mc.eps}
-		\caption{Hexagonal placement, hard boundaries, Monte Carlo simulation, at 80000 steps, with 100 particles}
+		\caption{Hexagonal placement, hard boundaries, Monte Carlo simulation, at 100000 steps, with 100 particles}
 	\end{minipage}\hspace{0.5cm}
 	\begin{minipage}[t]{0.45\textwidth}
 		\centering
@@ -406,30 +408,31 @@ And the calculated total potential energy and its fluctuation are in Table \ref{
 		\toprule
 		                       & Monte Carlo & molecular dynamics \\ \midrule
 		total potential energy & $-30.28$    & $-34.45$           \\
-		square fluctuation     & $21.2$      & $21.9$             \\
-		fluctuation            & $4.60$      & $4.68$             \\
+		fluctuation            & $21.2$      & $21.9$             \\
+		sqrt fluctuation       & $4.60$      & $4.68$             \\
 		\bottomrule
 	\end{tabular}%
 	\label{tab:hex_hard_2}%
 \end{table}%  
+Difference within $0.5\sigma$ range. The two result matches.
 \subsubsection{Tail Correction}
-Equation \eqref{eq:tail} also fits here. So, by putting $r_c = 2.5, \, \sigma = \epsilon = 1, \,\rho = 0.8442, \,N = 100$ into equation \eqref{eq:tail}, we can 
+Equation \eqref{eq:tail} also fits here. So, by putting $r_\text{c} = 2.5, \, \sigma = \epsilon = 1, \,\rho = 0.8442, \,N = 100$ into equation \eqref{eq:tail}, we can
 get tail correction for periodic boundary conditions:
 \begin{equation}
 	U^{\text{tail}}_{\text{periodic}} = -0.802\,.
 \end{equation}
-And for hard boundaries, since the size of system is big enough (for $100$ particles, $L = \sqrt{100/0.1} = 31.62$), the error from finite size is so small that we can 
+And for hard boundaries, since the size of system is big enough (for $100$ particles, $L = \sqrt{100/0.1} = 31.62$), the error from finite size is so small that we can
 emit them:
 \begin{equation}
 	U^{\text{tail}}_{\text{hard}} \approx U^{\text{tail}}_{\text{periodic}} = -0.802\,.
 \end{equation}
 
 \section{Finite Size Scaling}
-By varying system size with density fixed, run Monte Carlo simulations, and plot system's total energy and fluctuation against it particle number, we can 
-do extrapolation to predict the behavior of the system is given as infinite size. and by plotting against $1/N$ rather than $N$ will make the extrapolation 
+By varying system size with density fixed, run Monte Carlo simulations, and plot system's total energy and fluctuation against it particle number, we can
+do extrapolation to predict the behavior of the system is given as infinite size. and by plotting against $1/N$ rather than $N$ will make the extrapolation
 easier.
 
-Those following simulations are done with a random initialization. 
+Those following simulations are done with a random initialization.
 
 \subsection{$T =0.728,\, \rho = 0.8442$, Periodic Boundaries}
 In this simulation, we get:
@@ -446,23 +449,23 @@ In this simulation, we get:
 		\caption{fluctuations}
 	\end{minipage}
 \end{figure}
-With periodic boundaries, we can seen that as $1/N\to 0$, $\ln \left| E_\text{tot} \right|$ raises linearly, so by going a fit with model $E = k\cdot \left(\frac{1}{N}\right)^{b}$ with CERN ROOT, 
+With periodic boundaries, we can seen that as $1/N\to 0$, $\ln \left| E_\text{tot} \right|$ raises linearly, so by going a fit with model $E = k\cdot \left(\frac{1}{N}\right)^{b}$ with CERN ROOT,
 by assigning energy's $1\sigma$ range with fluctuations, we can get:
 \begin{equation}
 	\left\{
-		\begin{aligned}
-			k &= \num[separate-uncertainty = true]{-2.38+-0.28}\\
-			b &= \num[separate-uncertainty = true]{-9.99+-0.02}
-		\end{aligned}
+	\begin{aligned}
+		k & = \num[separate-uncertainty = true]{-2.38+-0.28} \\
+		b & = \num[separate-uncertainty = true]{-9.99+-0.02}
+	\end{aligned}
 	\right.
 \end{equation}
-This result is somehow reasonable: energy per particle is a constant $\num[separate-uncertainty = true]{-2.38+-0.28}$ when $b = 1$. And when it comes to fluctuations, we can see $\delta U^2$ fit with same model 
+This result is somehow reasonable: energy per particle is a constant $\num[separate-uncertainty = true]{-2.38+-0.28}$ when $b = 1$. And when it comes to fluctuations, we can see $\delta U^2$ fit with same model
 \begin{equation}
 	\left\{
-		\begin{aligned}
-			k &= 0.54\\
-			b &= -1.00
-		\end{aligned}
+	\begin{aligned}
+		k & = 0.54  \\
+		b & = -1.00
+	\end{aligned}
 	\right.
 \end{equation}
 We can get $\delta U^2\propto N^{1.00}$ matches thermostatic result: $\delta U^2\propto N$.
@@ -485,10 +488,10 @@ In this simulation, we get:
 With same fitting method, we can tell that for average energy
 \begin{equation}
 	\left\{
-		\begin{aligned}
-			k &= \num[separate-uncertainty = true]{-2.97+-0.91}\\
-			b &= \num[separate-uncertainty = true]{-0.876+-0.06}
-		\end{aligned}
+	\begin{aligned}
+		k & = \num[separate-uncertainty = true]{-2.97+-0.91}  \\
+		b & = \num[separate-uncertainty = true]{-0.876+-0.06}
+	\end{aligned}
 	\right.
 \end{equation}
 This suggests that with hard boundaries, we can not easily do extrapolation, since $b$ is far away $1$.
@@ -496,10 +499,10 @@ This suggests that with hard boundaries, we can not easily do extrapolation, sin
 And for fluctuation
 \begin{equation}
 	\left\{
-		\begin{aligned}
-			k &= 0.50\\
-			b &= -1.02
-		\end{aligned}
+	\begin{aligned}
+		k & = 0.50  \\
+		b & = -1.02
+	\end{aligned}
 	\right.
 \end{equation}
 $\delta U^2\propto N^{1.02}$ approximately, $\delta U^2\propto N$
@@ -521,10 +524,10 @@ In this simulation, we get:
 \end{figure}
 \begin{equation}
 	\left\{
-		\begin{aligned}
-			k &= \num[separate-uncertainty = true]{-0.275+-0.023}\\
-			b &= \num[separate-uncertainty = true]{-1.02+-0.16}
-		\end{aligned}
+	\begin{aligned}
+		k & = \num[separate-uncertainty = true]{-0.275+-0.023} \\
+		b & = \num[separate-uncertainty = true]{-1.02+-0.16}
+	\end{aligned}
 	\right.
 \end{equation}
 Because $b=1$ is within its range of the fit's $1\sigma$ range, we can extrapolation energy per particles to $N\to \infty$, $\num[separate-uncertainty = true]{-0.275+-0.023}$.
@@ -532,10 +535,10 @@ Because $b=1$ is within its range of the fit's $1\sigma$ range, we can extrapola
 And for fluctuation
 \begin{equation}
 	\left\{
-		\begin{aligned}
-			k &= 0.11\\
-			b &= -1.10
-		\end{aligned}
+	\begin{aligned}
+		k & = 0.11  \\
+		b & = -1.10
+	\end{aligned}
 	\right.
 \end{equation}
 Still, take error from the simulation info consideration, we can say that $\delta U^2\propto N$
@@ -558,28 +561,28 @@ In this simulation, we get:
 
 \begin{equation}
 	\left\{
-		\begin{aligned}
-			k &= \num[separate-uncertainty = true]{-0.285+-0.024}\\
-			b &= \num[separate-uncertainty = true]{-1.00+-0.17}
-		\end{aligned}
+	\begin{aligned}
+		k & = \num[separate-uncertainty = true]{-0.285+-0.024} \\
+		b & = \num[separate-uncertainty = true]{-1.00+-0.17}
+	\end{aligned}
 	\right.
 \end{equation}
-Because $b=1$ is within its range of the fit's $1\sigma$, we can extrapolation energy per particles to $N\to \infty$, $\num[separate-uncertainty = true]{-0.275+-0.023}$. 
+Because $b=1$ is within its range of the fit's $1\sigma$, we can extrapolation energy per particles to $N\to \infty$, $\num[separate-uncertainty = true]{-0.275+-0.023}$.
 Extrapolation works here for hard periodic boundaries suggest that for small density, difference between the two boundaries will be small enough.
 
 And for fluctuation
 \begin{equation}
 	\left\{
-		\begin{aligned}
-			k &= 0.13\\
-			b &= -1.07
-		\end{aligned}
+	\begin{aligned}
+		k & = 0.13  \\
+		b & = -1.07
+	\end{aligned}
 	\right.
 \end{equation}
 Still we can say, approximately, $\delta U^2\propto N$.
 
 \section{Radial distribution function}
-By simulation and save final particles positions, choose one and calculate its distance between other particles. Draw the result into a histogram. As following, 
+By simulation and save final particles positions, choose one and calculate its distance between other particles. Draw the result into a histogram. As following,
 all simulation is done with a random initialization:
 
 \subsection{$T =0.728,\, \rho = 0.8442$}
@@ -589,7 +592,7 @@ all simulation is done with a random initialization:
 	\caption{histogram from simulation with $T =0.728,\, \rho = 0.8442,\, N=100$}
 	\label{fig:rdf-1}
 \end{figure}
-Figure \ref{fig:rdf-1} is done with average histogram for all particles, and we can see a peak at near $x = 1.2$, and a wavy curve after. The change in density get smaller as 
+Figure \ref{fig:rdf-1} is done with average histogram for all particles, and we can see a peak at near $x = 1.2$, and a wavy curve after. The change in density get smaller as
 r raises, finally stop on near average density.
 
 By adding energy per bin, we can get particle energy from the histogram, it is $-2.360$. Slightly different from pervious simulation but within fluctuation range $U\pm\delta U$.
@@ -603,7 +606,7 @@ I guess, in this picture, the system is in liquid state, with medium coherence l
 	\caption{histogram from simulation with $T =1.0,\, \rho = 0.1, \,  N = 100$}
 	\label{fig:rdf-2}
 \end{figure}
-This time there is no such structure, here we can see that the radius distribution is likely uniform after one peak. Energy per particle is $-0.26$, still has a slightly difference but within 
+This time there is no such structure, here we can see that the radius distribution is likely uniform after one peak. Energy per particle is $-0.26$, still has a slightly difference but within
 fluctuation range $U\pm\delta U$, the two results matches.
 
 This time, the system is in gas state, with small coherence length.
@@ -623,15 +626,45 @@ System is in solid state, with a high coherence length.
 Use virial and pressure from the book:
 \begin{equation}
 	\left\{
-		\begin{aligned}
-			P&=\frac{\rho}{\beta}+\frac{\text{vir}}{V} \\
-			\text{vir}&=\frac{1}{2} \sum_{i} \sum_{j>i} \mathbf{f}\left(\mathbf{r}_{i j}\right) \cdot \mathbf{r}_{i j}
-		\end{aligned}
+	\begin{aligned}
+		p          & =\frac{\rho}{\beta}+\frac{\text{vir}}{V}                                                        \\
+		\text{vir} & =\frac{1}{2} \sum_{i} \sum_{j>i} \mathbf{f}\left(\mathbf{r}_{i j}\right) \cdot \mathbf{r}_{i j}
+	\end{aligned}
 	\right.
 \end{equation}
 And the tail correction:
 \begin{align}
-	p_{\text{tail}} &= 
+	p_{\text{tail}} & = \int_{r_\text{c}}^\infty 2\pi r \cdot 4\left(-12\frac{1}{r^{12}} + 6\frac{1}{r^6}\right) \rho\frac{N}{4V} \operatorname{dr} \\
+	                & = 12\pi\rho^2\left(\frac{1}{5r_\text{c}^{10}} - \frac{1}{4r_\text{c}^6}\right)                                                \\
+	                & \approx -0.240\rho^2
 \end{align}
+The simulation result is:
+\begin{figure}[h]
+	\centering
+	\includegraphics[height=0.2\textheight]{fig/pressure.eps}
+	\caption{Pressure simulation results with tail correction included, with 100 particles}
+	\label{fig:pressure-1}
+\end{figure}
+The curve is not smooth, I thought it was fluctuation in pressure, but by checking $\delta p^2 = \langle p^2\rangle - \langle p\rangle^2$, the error bar don't seem to cover this.
 
+So I changed particle number and reran the simulation:
+\begin{figure}[H]
+	\centering
+	\includegraphics[height=0.2\textheight]{fig/pressure_200.eps}
+	\caption{Pressure simulation results with tail correction included, with 200 particles}
+	\label{fig:pressure-1}
+\end{figure}
+
+From the figure,the non-smooth may be because of certain \textit{particle number} and \textit{size} combination. But the simulation results generally obeys that the higher the density or temperature, the higher the pressure.
+And when density goes beyond $\rho = 0.85$, the pressure increases sharply. This is because at this density, even with hexagonal close-packing configuration of its position, particles are still very close to
+each other, or to say, repel each other.
+
+\section{Conclusion}
+The simulation really takes a long time, it is a nightmare that I was running everything on a Surface Laptop (without a CPU Fan), and not having a replace computer at home. This requires optimizing as much as possible. Like 
+avoiding any \textit{copy} in the python code and try not using \textit{for loops}. In one class you suggested me to use Cython to do accumulation, but it takes me hours to write a Cython implementation of accumulation and found that 
+is not doing so much improvement, and buggy, may be I did not really know how to use Cython. Or next time I am trying do write something that runs on my poor laptop for huge simulation, I would choose C++.
+
+Back to the project itself, the molecular dynamics part, I think, is the hardest one. Because I did not come up a way to do \textit{unit test}, I have to judge my implementation by certain results (e.g. via conservation of energy and momentum during adiabatic simulation). 
+But by finishing the code, I get to know how thermostatic simulation is done. I was using \textit{Geant4} to do HEP process simulation, the difference between the two model is significant. In thermostatic the phase space is too big to directly do 
+sampling. But we can sample over whole phase space in HEP physics, that is where the difference come from.
 \end{document}

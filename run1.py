@@ -23,3 +23,4 @@ for i in sim.phy_sys.particles:
 plt.scatter(x, y)
 print(sim.phy_sys.get_potential_energy()/count)
 plt.show()
+print(sim.phy_sys.calc_pressure())

@@ -5,6 +5,7 @@ from random import randint, random
 from numpy import exp, array
 
 from configuration import physics_system
+from lennard_jones_potential import calc_vir
 
 
 class monte_carlo_system(physics_system):
@@ -50,3 +51,7 @@ class monte_carlo_system(physics_system):
         # self.particles[particle_id] = [random()*self.size for i in range(self.dimension)]
         if self.mode == 'hard':
             self.reposition(particle_id)
+
+    def calc_pressure(self):
+        tail = -0.240 * (self.count/(self.size**self.dimension))**2
+        return (self.count*self.temp + calc_vir(self.particles, self.mode, size=self.size))/(self.size**self.dimension) + tail
